@@ -1,0 +1,117 @@
+<html>
+<script src='https://d3js.org/d3.v5.min.js'></script>
+<style> circle {fill: lightblue; stroke: black;} </style>
+<body onload='init()'>
+<svg width=300 height=300>
+</svg>
+<script>
+async function init() {
+
+// set pixel width and height of SVG canvas and plot region
+var svg = d3.select("svg")
+var svgX = svg.attr("width")
+var svgY = svg.attr("height")
+var margin = 50
+var pltX = svgX - 2*margin
+var pltY = svgY - 2*margin
+// set axis parameters
+var domXY = [10,150]; // domain for both axes
+var tvalXY = [10,20,50,100];  // tick values for both axes
+// set scaling
+var scaleY = d3.scaleLog().base(10).domain(domXY).range([pltY,0]);
+var scaleX = d3.scaleLog().base(10).domain(domXY).range([0,pltX]);
+
+// load data
+const data = await d3.csv("https://flunky.github.io/cars2017.csv");
+
+// draw bubbles
+svg.append("g")
+    .attr("transform","translate(" + margin + "," + margin + ")")
+    .selectAll("circle")
+    .data(data)
+    .enter()
+    .append("circle")
+        .attr("cx", function(d) {return scaleX(d.AverageCityMPG);})
+        .attr("cy", function(d) {return scaleY(d.AverageHighwayMPG);})
+        .attr("r", function(d) {return (pltX/200)*2+Number(d.EngineCylinders);})
+
+// draw Y-axis
+var axisY = svg.append("g")
+    .attr("transform","translate(" + margin + "," + margin + ")")
+    .call(d3.axisLeft(scaleY)
+        .tickValues(tvalXY)
+        .tickFormat(d3.format("~s"))
+        )
+
+// draw X-axis
+var axisX = svg.append("g")
+    .attr("transform","translate(" + margin + "," + (svgX - margin) + ")")
+    .call(d3.axisBottom(scaleX)
+        .tickValues(tvalXY)
+        .tickFormat(d3.format("~s"))
+        )
+
+
+//console.log(svgX)
+//write(svgY)
+
+}
+
+// function to display variables for debugging
+function write(x) {
+    var par = document.createElement("p");
+    var text = document.createTextNode(x);
+    par.appendChild(text);
+    document.body.appendChild(par);
+}
+
+</script>
+</body>
+</html>
+
+<!--
+holding area for non-working code
+
+
+
+<html>
+<script src='https://d3js.org/d3.v5.min.js'></script>
+<style> path {stroke: black;}</style>
+<body>
+Hello world!
+
+<svg width=300 height=300></svg>
+<script>
+// variables provided by instructor
+var data = [4,8,15,16,23,42];
+var color = ['pink','lightyellow','lightgreen','lightcyan','lightblue','violet'];
+var pie = d3.pie();
+var arc = d3.arc().innerRadius(0).outerRadius(100);
+
+// set sizes and variables
+var svg = d3.select("svg")
+var svgX = svg.attr("width")
+var svgY = svg.attr("height")
+var grp = svg.append("g")
+
+// set attributes to center the pie chart within the svg canvas
+var svgCenter = grp
+  .attr("transform", "translate(" + (svgX/2) + "," + (svgY/2) + ")");
+
+var arcs = grp.selectAll("arc")
+  .data(pie(data))
+  .enter()
+  .append("path")
+  .attr("d", arc)
+  .attr("fill", function(d, i) { return color[i]; })
+
+// -------------------------------------------
+// these "write" statements are only for debugging 
+write(data)
+write(color)
+write(svgX)
+write(svgY)
+write(grp.attr)
+write(arcs.data)
+
+-->

@@ -10,71 +10,77 @@
 </head>
 
 <body onload="init()">
-    
-<h1>A Tale of Two Cities</h1>
-<h2>Chicago’s crime rate is better – and worse – than you may think</h2>
-<p>Chicago is considered by some to be America’s most dangerous city. In a mid-2021 survey by the New York Times, 53% of readers thought Chicago had the highest murder rate in America. A former President described the city as “worse than Afghanistan”.</p>
-<p>The data tell a different story.</p>
-<p>Chicago is the third-largest city in America, but its crime rate just is in the middle of the pack. Of the 30 largest U.S. cities, Chicago ranks 16th based on crimes per 100,000 residents. Of the 100 largest cities, Chicago is ranked 44th.</p>
+    <h1>A Tale of Two Cities</h1>
+    <h2>Chicago’s crime rate is better – and worse – than you may think</h2>
+    <p>Chicago is considered by some to be America’s most dangerous city. In a mid-2021 survey by the New York Times, 53% of readers thought Chicago had the highest murder rate in America. A former President described the city as “worse than Afghanistan”.</p>
+    <p>The data tell a different story.</p>
+    <p>Chicago is the third-largest city in America, but its crime rate just is in the middle of the pack. Of the 30 largest U.S. cities, Chicago ranks 15th based on crimes per 100,000 residents. Of the 100 largest cities, Chicago is ranked 44th.</p>
+    <div id="container">Here:</div>
     
 <script>
-    // set pixel width and height of each region
-    const screenWd = window.innerWidth;
-    const screenHt = window.innerHeight; 
-    var marginWd = screenWd * 0.05;
-    var marginHt = screenHt * 0.05;
-    var chartWd = (screenWd - 3 * marginWd) / 2;
-    var chartHt = screenHt * 0.50;
-    // set upper left corner of each region
-    var chart1X = marginWd;
-    var chart1Y = marginHt; // screenHt - marginHt - chartHt
-    var chart2X = marginWd * 2 + chartWd;
-    var chart2Y = chart1Y;
-    // set spacing between bars
-    const barSpc = 1;
-    const colorChicago = "red";
-    const colorOther = "lightgray"
     
-async function init() {
-    // load data
-    const popul_csv = d3.csv("https://raw.githubusercontent.com/dburrus3/dburrus3.github.io/main/data/CityPopul.csv");
-    const rates_csv = d3.csv("https://raw.githubusercontent.com/dburrus3/dburrus3.github.io/main/data/CityCrimeRate.csv");
-}
-
 // Sample data for the bar charts
-const popul = [8804190,3898747,2746388,2304580,1608139,1603797,1434625,
-    1386932,1304379,1013240,961855,949611,918915,905748,887642,874579,
-    873965,737015,715522,689545,689447,681054,678815,675647,652503,
-    641903,639111,633104,633045,585708];
-const rates = [8357.07,6997.68,6917.4,6726.82,6239.99,5911.99,5775.23,
-    5565.95,5252.08,5104.96,4966.5,4769.99,4552.5,4501.8,4443.2,4381.65,
-    4360.93,4168.73,4037.27,3985.95,3836.39,3792.83,3612.23,3567.87,
-    3332.52,2861.02,2758.22,2220.67,2203.25,1987.49];
+async function init() {
+    const datax = await d3.csv("https://flunky.github.io/cars2017.csv");
 
-// Determine the maximum value from both datasets
-var scaleY1 = d3.scaleLinear()
-    .domain([popul.length, 0])
-    .range([chartHt, 0]);
-var scaleY2 = d3.scaleLinear()
-    .domain([rates.length, 0])
-    .range([chartHt, 0]);
+
+// load data
+const popul = await d3.csv("https://raw.githubusercontent.com/dburrus3/dburrus3.github.io/main/data/CityPopul.csv");
+const rates = await d3.csv("https://raw.githubusercontent.com/dburrus3/dburrus3.github.io/main/data/CityCrimeRate.csv");
+
+var labels1 = popul.map(d => d.City)
+var data1  = popul.map(d => d.Popul2020)
+var numPts1 = data1.length
+var maxData1 = Math.max.apply(null, popul.map(function (x) { return x.Popul2020; }))
+var barChgo1 = labels1.indexOf("Chicago, IL");
+
+var labels2 = rates.map(d => d.City)
+var data2  = rates.map(d => d.Crimes100K)
+var numPts2 = data2.length
+var maxData2 = Math.max.apply(null, rates.map(function (x) { return x.Crimes100K; }))
+var barChgo2 = labels2.indexOf("Chicago, IL");
+
+// set chart widths, heights, origin locations, etc.
+const screenWd = window.innerWidth;
+const screenHt = window.innerHeight; 
+var marginWd = Math.round(screenWd * 0.05);
+var marginHt = Math.round(screenHt * 0.05);
+var marginLabel = Math.round(screenWd * 0.08);
+var chartWd = Math.round((screenWd - 3 * marginWd) / 2 - marginLabel);
+var chartHt = Math.round(screenHt * 0.50);
+var chart1X = marginWd + marginLabel;
+var chart1Y = marginHt;
+var chart2X = marginWd * 2 + chartWd + 2 * marginLabel;
+var chart2Y = chart1Y;
+const barSpc = 1;
+const colorChicago = "red";
+const colorOther = "lightblue"
 
 // Calculate the scale for each chart
-const scaleX1 = d3.scaleLinear()
-    .domain([0, Math.max(...popul)])
+var scaleX1 = d3.scaleLinear()
+    .domain([0, maxData1])
     .range([0, chartWd]);
 
-const scaleX2 = d3.scaleLinear()
-    .domain([0, Math.max(...rates)])
+var scaleY1 = d3.scaleBand()
+    .domain(labels1)
+    .range([0, chartHt]);
+
+var scaleX2 = d3.scaleLinear()
+    .domain([0, maxData2])
     .range([0, chartWd]);
 
-// SVG container for both charts
+var scaleY2 = d3.scaleBand()
+    .domain(labels2)
+    .range([0, chartHt]);
+
+// SVG container for both Chart 1 and Chart 2
 const svg = d3.select("body")
     .append("svg")
-    .attr("width", chartWd * 2 + marginWd)
-    .attr("height", chartHt);
+    .attr("width", screenWd - 2 + marginWd)
+    .attr("height", chartHt)
+    .attr("id", "charts");
 
-// horizontal bar chart of city population per 2020 census
+// Chart 1: horizontal bar chart of population by city
 const chart1 = svg.append("g")
     .attr("transform","translate(" + chart1X + "," + chart1Y + ")");
 
@@ -83,24 +89,22 @@ chart1.selectAll("rect")
     .enter()
     .append("rect")
     .attr("x", 0)
-    .attr("y", (_, i) => i * (chartHt / popul.length))
-    .attr("width", (d) => scaleX1(d))
-    .attr("height", chartHt / popul.length - barSpc)
-    .attr("fill", (_, i) => (i === 2) ? colorChicago : colorOther);
+    .attr("y", (_, i) => i * (chartHt / numPts1))
+    .attr("width", (d) => scaleX1(d.Popul2020))
+    .attr("height", chartHt / numPts1 - barSpc)
+    .attr("id", "chart1")
+    .attr("fill", (_, i) => (i === barChgo1) ? colorChicago : colorOther);
 
 var axisX1 = svg.append("g")
     .attr("transform","translate(" + chart1X + "," + chart1Y + ")")
     .call(d3.axisTop(scaleX1)
-        .tickFormat(d3.format("~s")).ticks(10)
-        );
+        .tickFormat(d3.format("~s")).ticks(10));
 
 var axisY1 = svg.append("g")
     .attr("transform","translate(" + chart1X + "," + chart1Y + ")")
-    .call(d3.axisLeft(scaleY1)
-        .tickFormat(d3.format("~s"))
-        );
+    .call(d3.axisLeft(scaleY1));
 
-// horizontal bar chart of all crimes per 100K residents
+// Chart 2: horizontal bar chart of all crimes per 100K residents
 const chart2 = svg.append("g")
     .attr("transform","translate(" + chart2X + "," + chart2Y + ")");
 
@@ -109,32 +113,33 @@ chart2.selectAll("rect")
     .enter()
     .append("rect")
     .attr("x", 0)
-    .attr("y", (_, i) => i * (chartHt / rates.length))
-    .attr("width", (d) => scaleX2(d))
-    .attr("height", chartHt / rates.length - barSpc)
-    .attr("fill", (_, i) => (i === 16) ? colorChicago : colorOther);
+    .attr("y", (_, i) => i * (chartHt / numPts2))
+    .attr("width", (d) => scaleX2(d.Crimes100K))
+    .attr("height", chartHt / numPts2 - barSpc)
+    .attr("id", "chart2")
+    .attr("fill", (_, i) => (i === barChgo2) ? colorChicago : colorOther);
 
 var axisX2 = svg.append("g")
     .attr("transform","translate(" + chart2X + "," + chart2Y + ")")
-    .call(d3.axisTop(scaleX2).ticks(10));
+    .call(d3.axisTop(scaleX2)
+        .tickFormat(d3.format("~s")).ticks(10));
 
 var axisY2 = svg.append("g")
     .attr("transform","translate(" + chart2X + "," + chart2Y + ")")
-    .call(d3.axisLeft(scaleY2)
-        .tickFormat(d3.format("~s"))
-        );
+    .call(d3.axisLeft(scaleY2));
 
+        
 // Features of the annotation
 var annotations = [
   {
     note: {
-      title: "Annotation title",
-      label: "Here is the annotation label",
+      title: "Chicago",
+      label: "3rd largest population",
       align: "middle",
       wrap: 100,
       padding: 3      
     },
-    x: 100,
+    x: 210,
     y: 100,
     dy: 20,
     dx: 20
@@ -144,10 +149,8 @@ var annotations = [
 // Add annotation to the chart
 var makeAnnotations = d3.annotation().annotations(annotations)
 
-d3.select("#example1")
+d3.select("#charts")
   .append("g")
   .call(makeAnnotations)
 
-</script>
-</body>
-</html>
+}

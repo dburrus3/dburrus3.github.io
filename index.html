@@ -74,6 +74,9 @@ var scaleY2 = d3.scaleBand()
     .domain(labels2)
     .range([0, chartHt]);
 
+var annotX1 = marginWd + marginLabel + scaleX1(data1[barChgo1]);
+var annotY1 = marginHt + chartHt / numPts1 * (barChgo1 + 0.5);
+
 // SVG container for both Chart 1 and Chart 2
 const svg = d3.select("body")
     .append("svg")
@@ -140,10 +143,10 @@ var annotations = [
       wrap: 100,
       padding: 3      
     },
-    x: 210,
-    y: 100,
-    dy: 20,
-    dx: 20
+    x: annotX1,
+    y: annotY1,
+    dy: 30,
+    dx: 50
   }
 ]
 
@@ -154,29 +157,8 @@ d3.select("#charts")
   .append("g")
   .call(makeAnnotations)
 
-}
-
-// -------------------------------------------
-// these "write" statements are only for debugging 
-
-    // code check: write values to the screen
-    const texts = [
-        "Screen width: " + screenWd + ", height: " + screenHt + ".",
-        "Margin width: " + marginWd + ", height: " + marginHt + ".",
-        "Chart width: " + chartWd + ", height: " + chartHt + ".",
-        "Chart 1X: " + chart1X + ", 1Y: " + chart1Y + ".",
-        "Chart 2X: " + chart2X + ", 2Y: " + chart2Y + "."
-    ];
-    // Get the reference to the container element where the <p> elements will be added
-    // Replace 'container' with the ID of your desired container element
-    const container = document.getElementById('container'); 
-    // Create and add the <p> elements with the respective texts
-    texts.forEach(text => {
-        const paragraph = document.createElement('p');
-        paragraph.textContent = text;
-        container.appendChild(paragraph);
-    });
     
+}
 
 </script>
 </body>

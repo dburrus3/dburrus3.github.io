@@ -2,125 +2,152 @@
 <head>
     <title>Chicago Crime Statistics</title>
     <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+    <script src="https://rawgit.com/susielu/d3-annotation/master/d3-annotation.min.js"></script>
+    <style>
+        rect {stroke: white;}
+    </style>
 </head>
-    
-<script src='https://d3js.org/d3.v5.min.js'></script>
-    
-<style> circle {fill: lightblue; stroke: black;} </style>
 
-<body onload='init()'>
+<body onload="init()">
+    
 <h1>A Tale of Two Cities</h1>
-<h2>Chicago crime is both better and worse than you think</h2>
-<svg width=300 height=300></svg>
-
+<h2>Chicago’s crime rate is better – and worse – than you may think</h2>
+<p>Chicago is considered by some to be America’s most dangerous city. In a mid-2021 survey by the New York Times, 53% of readers thought Chicago had the highest murder rate in America. A former President described the city as “worse than Afghanistan”.</p>
+<p>The data tell a different story.</p>
+<p>Chicago is the third-largest city in America, but its crime rate just is in the middle of the pack. Of the 30 largest U.S. cities, Chicago ranks 16th based on crimes per 100,000 residents. Of the 100 largest cities, Chicago is ranked 44th.</p>
+    
 <script>
+    // set pixel width and height of each region
+    const screenWd = window.innerWidth;
+    const screenHt = window.innerHeight; 
+    var marginWd = screenWd * 0.05;
+    var marginHt = screenHt * 0.05;
+    var chartWd = (screenWd - 3 * marginWd) / 2;
+    var chartHt = screenHt * 0.50;
+    // set upper left corner of each region
+    var chart1X = marginWd;
+    var chart1Y = marginHt; // screenHt - marginHt - chartHt
+    var chart2X = marginWd * 2 + chartWd;
+    var chart2Y = chart1Y;
+    // set spacing between bars
+    const barSpc = 1;
+    const colorChicago = "red";
+    const colorOther = "lightgray"
+    
 async function init() {
+    // load data
+    const popul_csv = await d3.csv("https://github.com/dburrus3/dburrus3.github.io/tree/main/data/CityPopul.csv");
+    const rates_csv = await d3.csv("https://github.com/dburrus3/dburrus3.github.io/tree/main/data/CityCrimeRate.csv");
+}
 
-// set pixel width and height of SVG canvas and plot region
-var svg = d3.select("svg")
-var svgX = svg.attr("width")
-var svgY = svg.attr("height")
-var margin = 50
-var pltX = svgX - 2*margin
-var pltY = svgY - 2*margin
-// set axis parameters
-var domXY = [10,150]; // domain for both axes
-var tvalXY = [10,20,50,100];  // tick values for both axes
-// set scaling
-var scaleY = d3.scaleLog().base(10).domain(domXY).range([pltY,0]);
-var scaleX = d3.scaleLog().base(10).domain(domXY).range([0,pltX]);
+// Sample data for the bar charts
+const popul = [8804190,3898747,2746388,2304580,1608139,1603797,1434625,
+    1386932,1304379,1013240,961855,949611,918915,905748,887642,874579,
+    873965,737015,715522,689545,689447,681054,678815,675647,652503,
+    641903,639111,633104,633045,585708];
+const rates = [8357.07,6997.68,6917.4,6726.82,6239.99,5911.99,5775.23,
+    5565.95,5252.08,5104.96,4966.5,4769.99,4552.5,4501.8,4443.2,4381.65,
+    4360.93,4168.73,4037.27,3985.95,3836.39,3792.83,3612.23,3567.87,
+    3332.52,2861.02,2758.22,2220.67,2203.25,1987.49];
 
-// load data
-const data = await d3.csv("https://flunky.github.io/cars2017.csv");
+// Determine the maximum value from both datasets
+var scaleY1 = d3.scaleLinear()
+    .domain([popul.length, 0])
+    .range([chartHt, 0]);
+var scaleY2 = d3.scaleLinear()
+    .domain([rates.length, 0])
+    .range([chartHt, 0]);
 
-// draw bubbles
-svg.append("g")
-    .attr("transform","translate(" + margin + "," + margin + ")")
-    .selectAll("circle")
-    .data(data)
+// Calculate the scale for each chart
+const scaleX1 = d3.scaleLinear()
+    .domain([0, Math.max(...popul)])
+    .range([0, chartWd]);
+
+const scaleX2 = d3.scaleLinear()
+    .domain([0, Math.max(...rates)])
+    .range([0, chartWd]);
+
+// SVG container for both charts
+const svg = d3.select("body")
+    .append("svg")
+    .attr("width", chartWd * 2 + marginWd)
+    .attr("height", chartHt);
+
+// horizontal bar chart of city population per 2020 census
+const chart1 = svg.append("g")
+    .attr("transform","translate(" + chart1X + "," + chart1Y + ")");
+
+chart1.selectAll("rect")
+    .data(popul)
     .enter()
-    .append("circle")
-        .attr("cx", function(d) {return scaleX(d.AverageCityMPG);})
-        .attr("cy", function(d) {return scaleY(d.AverageHighwayMPG);})
-        .attr("r", function(d) {return (pltX/200)*2+Number(d.EngineCylinders);})
+    .append("rect")
+    .attr("x", 0)
+    .attr("y", (_, i) => i * (chartHt / popul.length))
+    .attr("width", (d) => scaleX1(d))
+    .attr("height", chartHt / popul.length - barSpc)
+    .attr("fill", (_, i) => (i === 2) ? colorChicago : colorOther);
 
-// draw Y-axis
-var axisY = svg.append("g")
-    .attr("transform","translate(" + margin + "," + margin + ")")
-    .call(d3.axisLeft(scaleY)
-        .tickValues(tvalXY)
+var axisX1 = svg.append("g")
+    .attr("transform","translate(" + chart1X + "," + chart1Y + ")")
+    .call(d3.axisTop(scaleX1)
+        .tickFormat(d3.format("~s")).ticks(10)
+        );
+
+var axisY1 = svg.append("g")
+    .attr("transform","translate(" + chart1X + "," + chart1Y + ")")
+    .call(d3.axisLeft(scaleY1)
         .tickFormat(d3.format("~s"))
-        )
+        );
 
-// draw X-axis
-var axisX = svg.append("g")
-    .attr("transform","translate(" + margin + "," + (svgX - margin) + ")")
-    .call(d3.axisBottom(scaleX)
-        .tickValues(tvalXY)
+// horizontal bar chart of all crimes per 100K residents
+const chart2 = svg.append("g")
+    .attr("transform","translate(" + chart2X + "," + chart2Y + ")");
+
+chart2.selectAll("rect")
+    .data(rates)
+    .enter()
+    .append("rect")
+    .attr("x", 0)
+    .attr("y", (_, i) => i * (chartHt / rates.length))
+    .attr("width", (d) => scaleX2(d))
+    .attr("height", chartHt / rates.length - barSpc)
+    .attr("fill", (_, i) => (i === 16) ? colorChicago : colorOther);
+
+var axisX2 = svg.append("g")
+    .attr("transform","translate(" + chart2X + "," + chart2Y + ")")
+    .call(d3.axisTop(scaleX2).ticks(10));
+
+var axisY2 = svg.append("g")
+    .attr("transform","translate(" + chart2X + "," + chart2Y + ")")
+    .call(d3.axisLeft(scaleY2)
         .tickFormat(d3.format("~s"))
-        )
+        );
 
+// Features of the annotation
+var annotations = [
+  {
+    note: {
+      title: "Annotation title",
+      label: "Here is the annotation label",
+      align: "middle",
+      wrap: 100,
+      padding: 3      
+    },
+    x: 100,
+    y: 100,
+    dy: 20,
+    dx: 20
+  }
+]
 
-//console.log(svgX)
-//write(svgY)
+// Add annotation to the chart
+var makeAnnotations = d3.annotation().annotations(annotations)
 
-}
-
-// function to display variables for debugging
-function write(x) {
-    var par = document.createElement("p");
-    var text = document.createTextNode(x);
-    par.appendChild(text);
-    document.body.appendChild(par);
-}
+d3.select("#example1")
+  .append("g")
+  .call(makeAnnotations)
 
 </script>
 </body>
 </html>
-
-<!--
-holding area for non-working code
-
-
-
-<html>
-<script src='https://d3js.org/d3.v5.min.js'></script>
-<style> path {stroke: black;}</style>
-<body>
-Hello world!
-
-<svg width=300 height=300></svg>
-<script>
-// variables provided by instructor
-var data = [4,8,15,16,23,42];
-var color = ['pink','lightyellow','lightgreen','lightcyan','lightblue','violet'];
-var pie = d3.pie();
-var arc = d3.arc().innerRadius(0).outerRadius(100);
-
-// set sizes and variables
-var svg = d3.select("svg")
-var svgX = svg.attr("width")
-var svgY = svg.attr("height")
-var grp = svg.append("g")
-
-// set attributes to center the pie chart within the svg canvas
-var svgCenter = grp
-  .attr("transform", "translate(" + (svgX/2) + "," + (svgY/2) + ")");
-
-var arcs = grp.selectAll("arc")
-  .data(pie(data))
-  .enter()
-  .append("path")
-  .attr("d", arc)
-  .attr("fill", function(d, i) { return color[i]; })
-
-// -------------------------------------------
-// these "write" statements are only for debugging 
-write(data)
-write(color)
-write(svgX)
-write(svgY)
-write(grp.attr)
-write(arcs.data)
-
--->

@@ -1,29 +1,42 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Chicago Crime Statistics</title>
+    <title>CS416 Narrative Visualization, Summer 2023, dburrus3@illinois.edu</title>
     <link rel="icon" type="image/x-icon" href="favicon.ico">
     <script src="https://d3js.org/d3.v5.min.js"></script>
     <script src="https://rawgit.com/susielu/d3-annotation/master/d3-annotation.min.js"></script>
-    <style>
-        rect {stroke: white;}
-    </style>
 </head>
 
+<style>
+    h1 { font: 30px Arial Black; color: black; 
+        background-color:rgb(245, 245, 245);}
+    h2 { font: 24px Arial Black; color: black; }
+    body { font: 14px Georgia; color: black; }
+    button { font: 14px Arial Black; cursor: pointer; text-align: center;
+        border-radius: 8px; border:2px solid darkgreen; width: 15%; padding: 2px 0px;
+        color: darkgreen; background-color:lightgreen;}
+    button:hover { background-color: darkgreen; color: white; }
+    rect {stroke: white;}
+</style>
+
 <body onload="init()">
-    <h1>A Tale of Two Cities</h1>
-    <h2>Chicago’s crime rate is better – and worse – than you may think</h2>
-    <p>Chicago is considered by some to be America’s most dangerous city. In a mid-2021 survey by the New York Times, 53% of readers thought Chicago had the highest murder rate in America. A former President described the city as “worse than Afghanistan”.</p>
-    <p>The data tell a different story.</p>
-    <p>Chicago is the third-largest city in America, but its crime rate just is in the middle of the pack. Of the 30 largest U.S. cities, Chicago ranks 15th based on crimes per 100,000 residents. Of the 100 largest cities, Chicago is ranked 44th.</p>
-    <div id="container">Here:</div>
+
+<h1>A Tale of Two Cities</h1>
+<h2>Chicago’s crime rate is better – and worse – than you may think</h2>
+<p>Chicago is considered by some to be America’s most dangerous city. In a mid-2021 survey by the New York Times, 53% of readers thought Chicago had the highest murder rate in America. A former President described the city as “worse than Afghanistan”.</p>
+<p>The data tell a different story.</p>
+<p>Chicago is the third-largest city in America, but its crime rate just is in the middle of the pack. Of the 30 largest U.S. cities, Chicago ranks 15th based on crimes per 100,000 residents. Of the 100 largest cities, Chicago is ranked 44th.</p>
+</br>
+
+<div id="container">
+    <a href="Quiz_8-2-6.html"><button>< Scene 2</button></a>
+    <a href="Quiz_8-1-4.html"><button>Scene 3 ></button></a>
+</div>
     
 <script>
     
 // init function
 async function init() {
-    const datax = await d3.csv("https://flunky.github.io/cars2017.csv");
-
 
 // load data
 const popul = await d3.csv("https://raw.githubusercontent.com/dburrus3/dburrus3.github.io/main/data/CityPopul.csv");
@@ -44,9 +57,9 @@ var barChgo2 = labels2.indexOf("Chicago, IL");
 // set chart widths, heights, origin locations, etc.
 const screenWd = window.innerWidth;
 const screenHt = window.innerHeight; 
-var marginWd = Math.round(screenWd * 0.05);
+var marginWd = Math.round(screenWd * 0.02);
 var marginHt = Math.round(screenHt * 0.05);
-var marginLabel = Math.round(screenWd * 0.08);
+var marginLabel = 100; // Math.round(screenWd * 0.08);
 var chartWd = Math.round((screenWd - 3 * marginWd) / 2 - marginLabel);
 var chartHt = Math.round(screenHt * 0.50);
 var chart1X = marginWd + marginLabel;
@@ -81,7 +94,7 @@ var annotY1 = marginHt + chartHt / numPts1 * (barChgo1 + 0.5);
 const svg = d3.select("body")
     .append("svg")
     .attr("width", screenWd - 2 + marginWd)
-    .attr("height", chartHt)
+    .attr("height", chartHt + 2 + marginHt)
     .attr("id", "charts");
 
 // Chart 1: horizontal bar chart of population by city
@@ -108,6 +121,12 @@ var axisY1 = svg.append("g")
     .attr("transform","translate(" + chart1X + "," + chart1Y + ")")
     .call(d3.axisLeft(scaleY1));
 
+var axisX1label = svg.append("text")      // text label for the x axis
+    .attr("x", chart1X + chartWd / 2)
+    .attr("y", marginHt / 2)
+    .style("text-anchor", "middle")
+    .text("Population");
+
 // Chart 2: horizontal bar chart of all crimes per 100K residents
 const chart2 = svg.append("g")
     .attr("transform","translate(" + chart2X + "," + chart2Y + ")");
@@ -132,6 +151,12 @@ var axisY2 = svg.append("g")
     .attr("transform","translate(" + chart2X + "," + chart2Y + ")")
     .call(d3.axisLeft(scaleY2));
 
+var axisX2label = svg.append("text")      // text label for the x axis
+    .attr("x", chart2X + chartWd / 2)
+    .attr("y", marginHt / 2)
+    .style("text-anchor", "middle")
+    .text("Reported Crimes Per 100,000 Residents");
+
         
 // Features of the annotation
 var annotations = [
@@ -139,6 +164,8 @@ var annotations = [
     note: {
       title: "Chicago",
       label: "3rd largest population",
+      lineType: "none",
+      orientation: "leftRight",
       align: "middle",
       wrap: 100,
       padding: 3      
@@ -146,7 +173,7 @@ var annotations = [
     x: annotX1,
     y: annotY1,
     dy: 30,
-    dx: 50
+    dx: 30
   }
 ]
 

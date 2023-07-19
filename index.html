@@ -100,7 +100,7 @@ var annotX2 = chart2X + scaleX2(data2[barChgo2]);
 var annotY2 = chart2Y + chartHt / numPts1 * (barChgo2 + 0.5);
 
 // create SVG container for both Chart 1 and Chart 2
-const svg = d3.select("body")
+const svg = d3.select("#chartsdiv")
     .append("svg")
     .attr("width", screenWd - 2 + marginWd)
     .attr("height", chartHt + 2 + marginHt)

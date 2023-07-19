@@ -1,4 +1,6 @@
 <!DOCTYPE html>
+<meta charset="utf-8">
+
 <html>
 <head>
     <title>CS416 Narrative Visualization, Summer 2023, dburrus3@illinois.edu</title>
@@ -11,8 +13,8 @@
     h1 { font: 30px Arial Black; color: black; 
         background-color:rgb(245, 245, 245);}
     h2 { font: 24px Arial Black; color: black; }
-    body { font: 14px Georgia; color: black; }
-    button { font: 14px Arial Black; cursor: pointer; text-align: center;
+    body { font: 16px Georgia; color: black; }
+    button { font: 16px Arial Black; cursor: pointer; text-align: center;
         border-radius: 8px; border:2px solid darkgreen; width: 15%; padding: 2px 0px;
         color: darkgreen; background-color:lightgreen;}
     button:hover { background-color: darkgreen; color: white; }
@@ -23,22 +25,23 @@
 
 <h1>A Tale of Two Cities</h1>
 <h2>Chicago’s crime rate is better – and worse – than you may think</h2>
-<p>Chicago is considered by some to be America’s most dangerous city. In a mid-2021 survey by the New York Times, 53% of readers thought Chicago had the highest murder rate in America. A former President described the city as “worse than Afghanistan”.</p>
+<p>Chicago is considered by some to be America’s most dangerous city. In a mid-2021 survey by the New York Times, 53% of readers thought Chicago had the highest murder rate in America. A former U.S. president described the city as “worse than Afghanistan”.</p>
 <p>The data tell a different story.</p>
 <p>Chicago is the third-largest city in America, but its crime rate just is in the middle of the pack. Of the 30 largest U.S. cities, Chicago ranks 15th based on crimes per 100,000 residents. Of the 100 largest cities, Chicago is ranked 44th.</p>
 </br>
-
 <div id="container">
     <a href="Quiz_8-2-6.html"><button>< Scene 2</button></a>
     <a href="Quiz_8-1-4.html"><button>Scene 3 ></button></a>
 </div>
-    
+</br>
+<div id="chartsdiv"></div>
+
 <script>
     
 // init function
 async function init() {
 
-// load data
+// load data for both charts and set related variables
 const popul = await d3.csv("https://raw.githubusercontent.com/dburrus3/dburrus3.github.io/main/data/CityPopul.csv");
 const rates = await d3.csv("https://raw.githubusercontent.com/dburrus3/dburrus3.github.io/main/data/CityCrimeRate.csv");
 
@@ -61,16 +64,18 @@ var marginWd = Math.round(screenWd * 0.02);
 var marginHt = Math.round(screenHt * 0.05);
 var marginLabel = 100; // Math.round(screenWd * 0.08);
 var chartWd = Math.round((screenWd - 3 * marginWd) / 2 - marginLabel);
-var chartHt = Math.round(screenHt * 0.50);
+var chartHt = Math.round(screenHt * 0.60);
 var chart1X = marginWd + marginLabel;
 var chart1Y = marginHt;
 var chart2X = marginWd * 2 + chartWd + 2 * marginLabel;
 var chart2Y = chart1Y;
-const barSpc = 1;
-const colorChicago = "red";
-const colorOther = "lightblue"
+const barSpc = 4;
+const colorPopulChgo = "mediumblue";
+const colorPopulOther = "skyblue";
+const colorCrimeChgo = "darkred";
+const colorCrimeOther = "darkorange";
 
-// Calculate the scale for each chart
+// set scales for each chart
 var scaleX1 = d3.scaleLinear()
     .domain([0, maxData1])
     .range([0, chartWd]);
@@ -87,15 +92,71 @@ var scaleY2 = d3.scaleBand()
     .domain(labels2)
     .range([0, chartHt]);
 
-var annotX1 = marginWd + marginLabel + scaleX1(data1[barChgo1]);
-var annotY1 = marginHt + chartHt / numPts1 * (barChgo1 + 0.5);
+// set annotation locations for each chart
+var annotX1 = chart1X + scaleX1(data1[barChgo1]);
+var annotY1 = chart1Y + chartHt / numPts1 * (barChgo1 + 0.5);
 
-// SVG container for both Chart 1 and Chart 2
+var annotX2 = chart2X + scaleX2(data2[barChgo2]);
+var annotY2 = chart2Y + chartHt / numPts1 * (barChgo2 + 0.5);
+
+// create SVG container for both Chart 1 and Chart 2
 const svg = d3.select("body")
     .append("svg")
     .attr("width", screenWd - 2 + marginWd)
     .attr("height", chartHt + 2 + marginHt)
     .attr("id", "charts");
+
+// create tooltip template for both charts
+var tooltip = d3.select("#chartsdiv")
+    .append("div")
+    .style("opacity", 0)
+    .style("background-color", "lightyellow")
+    .style("font-size", "12px")
+    .style("border", "solid")
+    .style("border-width", "1px")
+    .style("border-radius", "5px")
+    .style("padding", "10px");
+
+var fmtCommas = function(x) {
+    return parseFloat(x).toLocaleString();
+};
+
+// tooltip functions for mouse entry/movement/exit in Chart 1
+var mouseOver1 = function(d) {
+    tooltip
+        .html(d.City + " has" + "<br>" + fmtCommas(d.Popul2020) + " residents")
+        .style("opacity", 0.9)
+        .transition()
+        .duration(200)
+  }
+var mouseMove1 = function(d) {
+    tooltip
+        .style("left", (d3.mouse(this)[0]+90) + "px")
+        .style("top", (d3.mouse(this)[1]) + "px")
+  }
+var mouseOut1 = function(d) {
+    tooltip
+        .style("opacity", 0)
+  }
+
+// tooltip functions for mouse entry/movement/exit in Chart 2
+var mouseOver2 = function(d) {
+    tooltip
+        .html(d.City + " has " + "<br>" + fmtCommas(Math.round(d.Crimes100K)) + 
+            " reported crimes" + "<br>" + "per 100K residents")
+        .style("opacity", 0.9)
+        .transition()
+        .duration(200)
+  }
+var mouseMove2 = function(d) {
+    tooltip
+        .style("left", (d3.mouse(this)[0]+90) + "px")
+        .style("top", (d3.mouse(this)[1]) + "px")
+  }
+var mouseOut2 = function(d) {
+    tooltip
+        .style("opacity", 0)
+  }
 
 // Chart 1: horizontal bar chart of population by city
 const chart1 = svg.append("g")
@@ -110,7 +171,11 @@ chart1.selectAll("rect")
     .attr("width", (d) => scaleX1(d.Popul2020))
     .attr("height", chartHt / numPts1 - barSpc)
     .attr("id", "chart1")
-    .attr("fill", (_, i) => (i === barChgo1) ? colorChicago : colorOther);
+    .attr("fill", (_, i) => (i === barChgo1) ? colorPopulChgo : colorPopulOther)
+    .style("cursor", "pointer")
+    .on("mouseover", mouseOver1)
+    .on("mousemove", mouseMove1)
+    .on("mouseout", mouseOut1);
 
 var axisX1 = svg.append("g")
     .attr("transform","translate(" + chart1X + "," + chart1Y + ")")
@@ -140,7 +205,11 @@ chart2.selectAll("rect")
     .attr("width", (d) => scaleX2(d.Crimes100K))
     .attr("height", chartHt / numPts2 - barSpc)
     .attr("id", "chart2")
-    .attr("fill", (_, i) => (i === barChgo2) ? colorChicago : colorOther);
+    .attr("fill", (_, i) => (i === barChgo2) ? colorCrimeChgo : colorCrimeOther)
+    .style("cursor", "pointer")
+    .on("mouseover", mouseOver2)
+    .on("mousemove", mouseMove2)
+    .on("mouseout", mouseOut2);
 
 var axisX2 = svg.append("g")
     .attr("transform","translate(" + chart2X + "," + chart2Y + ")")
@@ -156,36 +225,46 @@ var axisX2label = svg.append("text")      // text label for the x axis
     .attr("y", marginHt / 2)
     .style("text-anchor", "middle")
     .text("Reported Crimes Per 100,000 Residents");
-
-        
-// Features of the annotation
+      
+// Chart 1 annotation
 var annotations = [
-  {
-    note: {
-      title: "Chicago",
-      label: "3rd largest population",
-      lineType: "none",
-      orientation: "leftRight",
-      align: "middle",
-      wrap: 100,
-      padding: 3      
-    },
-    x: annotX1,
-    y: annotY1,
-    dy: 30,
-    dx: 30
-  }
+    {
+        note: {
+            title: "Chicago",
+            label: "3rd largest population",
+            lineType: "none",
+            orientation: "leftRight", align: "middle",
+            wrap: 100, padding: 3      
+        },
+        x: annotX1, y: annotY1,
+        dx: 30, dy: 30
+    }
 ]
-
-// Add annotation to the chart
 var makeAnnotations = d3.annotation().annotations(annotations)
+d3.select("#charts")
+    .append("g")
+    .call(makeAnnotations)
 
+// Chart 2 annotation
+var annotations = [
+    {
+        note: {
+            title: "Chicago",
+            label: "Average crime rate",
+            lineType: "none",
+            orientation: "leftRight", align: "middle",
+            wrap: 100, padding: 3      
+        },
+        x: annotX2, y: annotY2,
+        dx: 30, dy: 30
+    }
+]
+var makeAnnotations = d3.annotation().annotations(annotations)
 d3.select("#charts")
   .append("g")
-  .call(makeAnnotations)
+  .call(makeAnnotations)    
 
-    
-}
+}  // end async function
 
 </script>
 </body>

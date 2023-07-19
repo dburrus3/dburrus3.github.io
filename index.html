@@ -15,7 +15,7 @@
     h2 { font: 24px Arial Black; color: black; }
     body { font: 16px Georgia; color: black; }
     button { font: 16px Arial Black; cursor: pointer; text-align: center;
-        border-radius: 8px; border:2px solid darkgreen; width: 15%; padding: 2px 0px;
+        border-radius: 8px; border:1px solid darkgreen; width: 15%; padding: 2px 0px;
         color: darkgreen; background-color:lightgreen;}
     button:hover { background-color: darkgreen; color: white; }
     rect {stroke: white;}
@@ -28,10 +28,11 @@
 <p>Chicago is considered by some to be America’s most dangerous city. In a mid-2021 survey by the New York Times, 53% of readers thought Chicago had the highest murder rate in America. A former U.S. president described the city as “worse than Afghanistan”.</p>
 <p>The data tell a different story.</p>
 <p>Chicago is the third-largest city in America, but its crime rate just is in the middle of the pack. Of the 30 largest U.S. cities, Chicago ranks 15th based on crimes per 100,000 residents. Of the 100 largest cities, Chicago is ranked 44th.</p>
+<p>Chicago has less crime than Memphis, which is one-fourth of its size, as well as Houston, which has nearly the same population. <strong>Hover over the bars</strong> to see each city's population and crime rate, or click the <strong>button</strong> to learn more.</p>
 </br>
 <div id="container">
-    <a href="Quiz_8-2-6.html"><button>< Scene 2</button></a>
-    <a href="Quiz_8-1-4.html"><button>Scene 3 ></button></a>
+<!--<a href="Quiz_8-2-6.html"><button>< Go Back</button></a>-->    
+    <a href="Quiz_8-1-4.html"><button>Trends ></button></a>
 </div>
 </br>
 <div id="chartsdiv"></div>
@@ -109,6 +110,7 @@ const svg = d3.select("#chartsdiv")
 // create tooltip template for both charts
 var tooltip = d3.select("#chartsdiv")
     .append("div")
+    .style("position", "absolute")
     .style("opacity", 0)
     .style("background-color", "lightyellow")
     .style("font-size", "12px")
@@ -121,39 +123,36 @@ var fmtCommas = function(x) {
     return parseFloat(x).toLocaleString();
 };
 
-// tooltip functions for mouse entry/movement/exit in Chart 1
+// tooltip functions for mouse entry/movement/exit in Charts 1 and 2
 var mouseOver1 = function(d) {
     tooltip
         .html(d.City + " has" + "<br>" + fmtCommas(d.Popul2020) + " residents")
         .style("opacity", 0.9)
         .transition()
-        .duration(200)
-  }
-var mouseMove1 = function(d) {
-    tooltip
-        .style("left", (d3.mouse(this)[0]+90) + "px")
-        .style("top", (d3.mouse(this)[1]) + "px")
-  }
-var mouseOut1 = function(d) {
-    tooltip
-        .style("opacity", 0)
+        .duration(100)
+        .style("left", d3.event.pageX + "px")
+        .style("top", d3.event.pageY + "px")
   }
 
-// tooltip functions for mouse entry/movement/exit in Chart 2
 var mouseOver2 = function(d) {
     tooltip
         .html(d.City + " has " + "<br>" + fmtCommas(Math.round(d.Crimes100K)) + 
             " reported crimes" + "<br>" + "per 100K residents")
         .style("opacity", 0.9)
         .transition()
-        .duration(200)
+        .duration(100)
+        .style("left", d3.event.pageX + "px")
+        .style("top", d3.event.pageY + "px")
   }
-var mouseMove2 = function(d) {
+
+var mouseMove = function(d) {
     tooltip
-        .style("left", (d3.mouse(this)[0]+90) + "px")
-        .style("top", (d3.mouse(this)[1]) + "px")
+        .style("left", d3.event.pageX + "px")
+        .style("top", d3.event.pageY + "px")
+        //.style("left", (d3.mouse(this)[0]+90) + "px")
+        //.style("top", (d3.mouse(this)[1]) + "px")
   }
-var mouseOut2 = function(d) {
+var mouseOut = function(d) {
     tooltip
         .style("opacity", 0)
   }
@@ -174,8 +173,8 @@ chart1.selectAll("rect")
     .attr("fill", (_, i) => (i === barChgo1) ? colorPopulChgo : colorPopulOther)
     .style("cursor", "pointer")
     .on("mouseover", mouseOver1)
-    .on("mousemove", mouseMove1)
-    .on("mouseout", mouseOut1);
+    .on("mousemove", mouseMove)
+    .on("mouseout", mouseOut);
 
 var axisX1 = svg.append("g")
     .attr("transform","translate(" + chart1X + "," + chart1Y + ")")
@@ -208,8 +207,8 @@ chart2.selectAll("rect")
     .attr("fill", (_, i) => (i === barChgo2) ? colorCrimeChgo : colorCrimeOther)
     .style("cursor", "pointer")
     .on("mouseover", mouseOver2)
-    .on("mousemove", mouseMove2)
-    .on("mouseout", mouseOut2);
+    .on("mousemove", mouseMove)
+    .on("mouseout", mouseOut);
 
 var axisX2 = svg.append("g")
     .attr("transform","translate(" + chart2X + "," + chart2Y + ")")

@@ -21,7 +21,7 @@
     .dataSelect { font: 12px Arial Black; cursor: pointer; text-align: center;
         border-radius: 8px; border:1px solid Navy; width: 10%; padding: 2px 0px;
         color: black; background-color:LightSkyBlue;}
-    .dataSelect:hover { background-color: Navy; color: white; }
+    .dataSelect:hover { background-color: MediumBlue; color: white; }
     .gridlines line { stroke: gray; stroke-opacity: 0.6; }
     rect {stroke: white;}
 </style>
@@ -31,7 +31,8 @@
 <h1>Recent Trends</h1>
 <h2>Chicago’s crime rate has improved</h2>
 <p>Bar charts on the previous page show reported crimes for the year 2019.</p>
-<p>During 2020 and 2021, crime rates in Chicago fell an average of <strong>21%</strong>, primarily due to COVID. Crime in 2022 remained <strong>11%</strong> below pre-COVID levels, despite the removal of lockdowns and a general return to normalcy.</p>
+<p>During 2020 and 2021, overall crime rates in Chicago fell an average of <strong>21%</strong>, primarily due to COVID. Crime in 2022 remained <strong>11%</strong> below pre-COVID levels, despite the removal of lockdowns and a general return to normalcy.</p>
+<p>However, not all kinds of crime followed the same trend. Click on the <strong>blue buttons</strong> below to see differences in the four major categories of crime, and what is driving recent trends.</p>
 </br>
 <div id="pageButtons">
     <a href="index.html"><button class="prevnext">< U.S.Cities</button></a>
@@ -39,12 +40,12 @@
 </div>
 </br>
 <div id="chartButtons">
-    <button class="dataSelect" onClick="choose(2)">Financial</button>
+    <a href="trends-2.html"><button class="dataSelect" onClick="choose(2)">Financial</button></a>
+    <!-- <button class="dataSelect" onClick="choose(2)">Financial</button> -->
     <button class="dataSelect" onClick="choose(3)">Violent</button>
     <button class="dataSelect" onClick="choose(4)">Property</button>
     <button class="dataSelect" onClick="choose(5)">Statutory</button>
     <button class="dataSelect" onClick="choose(6)">Total</button>
-    <button class="dataSelect" onClick="test()">TEST</button>
 </div>
 <div id="chartsdiv"></div>
 
@@ -55,12 +56,15 @@ var user = 6;
 function choose(series){
     // alert("You chose " + series + " - " + desc[series]);
     user = series;
-    return user;
-}
+    console.log("Inside choose(): " + user);
+    location.reload(true);
+    // return user;
+} 
+console.log("Outside choose(): " + user);
 function test(click) {
     const desc = ["Labels", "MonthEnd", "Financial", "Violent", "Property", "Statutory", "Total"]
     alert("You clicked on " + user + " - " + desc[user])
-    console.log("Choice: " + user)
+    console.log("Inside test(): " + user)
 }
 
 // init function
@@ -98,21 +102,23 @@ var covidEnd = labels.indexOf("2021-07");
 // ONE WAY TO EXTRACT X AND Y FOR THE LINE CHART ------------------------
 //choice = await choose();
 //alert("You chose " + choice);
-console.log("Choice: " + user)
+console.log("Where it's needed: " + user)
 
-// select data to display
-xChoose = 1;  // the x-axis will not change
-yChoose = user;  // should come from button click
+// select data series to display
+xChoose = 1;     // x-axis is always the months, and does not change 
+yChoose = user;  // data series 2..6 should come from button click
 xValues = trends[0,xChoose];
 yValues = trends[0,yChoose];
+// axes min and max, changes based on user-selected data series
 xMin = Math.min(...xValues);
 xMax = Math.max(...xValues);
+// add white space at top and bottom, so line does not fill the chart area
 yMin = Math.min(...yValues) * 0.50;
 yMax = Math.max(...yValues) * 1.10;
-data = [xValues, yValues];
+// chart title, changes based on user-selected series
 seriesName = ["Labels", "MonthEnd", "Financial", "Violent", "Property", "Statutory", "Total"];
+// color for line and title, changes based on user-selected series
 lineColor = ["Gray", "CadetBlue", "ForestGreen", "FireBrick", "DarkOrange", "HotPink", "DodgerBlue"];
-
 
 // set chart widths, heights, origin locations, etc.
 const screenWd = window.innerWidth;
@@ -134,7 +140,7 @@ var scaleY = d3.scaleLinear()
     .domain([yMin, yMax])
     .range([chartHt, 0]);
 
-// create SVG container for both Chart 1 and Chart 2
+// create SVG container for the line chart
 const svg = d3.select("#chartsdiv")
     .append("svg")
     .attr("width", screenWd - 2 * marginWd)
@@ -157,20 +163,22 @@ var axisY = svg.append("g")
     .attr("transform","translate(" + chartOriginX + "," + chartOriginY + ")")
     .call(d3.axisLeft(scaleY));
     
-// draw line based on selected data
+// create SVG path based on user-selected data series
 var line = function(x, y) {
     return d3.line()
     .x(function(d,i) { return scaleX(x[i]); }) 
     .y(function(d,i) { return scaleY(y[i]); })
     (Array(x.length)); }
 
-var mypath = svg.append("path")
+// draw path created by line()
+var path = svg.append("path")
     .attr("transform","translate(" + chartOriginX + "," + chartOriginY + ")")    
     .attr("d", line(xValues,yValues))
     .attr("stroke", lineColor[yChoose] )
-    .attr("stroke-width", 3)
+    .attr("stroke-width", 4)
     .attr("fill", "none");
 
+// draw X and Y grid lines to make visual comparison easier
 var gridX = svg.append("g")
     .selectAll("line")
     .data(scaleX.ticks())
@@ -195,24 +203,22 @@ var gridY = svg.append("g")
     .attr("stroke", "gray" )
     .attr("opacity", 0.4);
 
-// show which series is being displayed
+// display title to indicate which series is being displayed
 var chartTitle = svg.append("text")
     .attr("x", chartOriginX + chartWd / 2)
     .attr("y", chartOriginY + marginHt / 1.8)
     .style("text-anchor", "middle")
     .attr("fill", lineColor[yChoose])
     .attr("font-family", "Arial Black")
-    .style("font-size", "20px")
+    .style("font-size", "24px")
     .attr("background-color", "white")
-    .text(seriesName[user] + " Crimes Reported by Month");
+    .text(seriesName[yChoose] + " Crimes Reported by Month");
       
-// set annotation locations for each chart
+// add annotations to the chart
 var annotX1 = chartOriginX + scaleX(xValues[covidStart]);
 var annotY1 = chartOriginY + scaleY(yValues[covidStart]);
 var annotX2 = chartOriginX + scaleX(xValues[covidEnd]);
 var annotY2 = chartOriginY + scaleY(yValues[covidEnd]);
-
-console.log("ann: " + annotX1 + "," + annotY1)
 
 var annotations = [
     {
@@ -240,7 +246,7 @@ var annotations = [
         align: "middle",
         wrap: 100, padding: 3      
     },
-    // color: "black",
+    // color: "darkgreen",
     x: annotX2, y: annotY2,
     dx: 10, dy: -50
 }
@@ -249,6 +255,68 @@ var makeAnnotations = d3.annotation().annotations(annotations)
 d3.select("#charts")
     .append("g")
     .call(makeAnnotations)
+
+// explanation of crime category
+if (yChoose == 2) {
+    var annotations = [{
+            note: {
+                label: "Financial crimes include fraud, forgery, embezzlement, and counterfeiting.",
+                lineType: "none", align: "left",
+                wrap: 250, padding: 3      
+            },
+            color: lineColor[yChoose],
+            x: chartOriginX + marginWd, 
+            y: chartOriginX + chartHt * 0.1,
+            dx: 0, dy: 0
+        }]
+        var makeAnnotations = d3.annotation().annotations(annotations)
+        d3.select("#charts").append("g").call(makeAnnotations)
+}
+if (yChoose == 3) {
+    var annotations = [{
+            note: {
+                label: "Violent crimes include homicide, manslaughter, battery, sexual assault, and robbery.",
+                lineType: "none", align: "left",
+                wrap: 250, padding: 3      
+            },
+            color: lineColor[yChoose],
+            x: chartOriginX + marginWd, 
+            y: chartOriginX + chartHt * 0.5,
+            dx: 0, dy: 0
+        }]
+        var makeAnnotations = d3.annotation().annotations(annotations)
+        d3.select("#charts").append("g").call(makeAnnotations)
+}
+if (yChoose == 4) {
+    var annotations = [{
+            note: {
+                label: "Property crimes include burglary, larceny, vehicle theft, vandalism, and arson.",
+                lineType: "none", align: "left",
+                wrap: 250, padding: 3      
+            },
+            color: lineColor[yChoose],
+            x: chartOriginX + marginWd, 
+            y: chartOriginX + chartHt * 0.6,
+            dx: 0, dy: 0
+        }]
+        var makeAnnotations = d3.annotation().annotations(annotations)
+        d3.select("#charts").append("g").call(makeAnnotations)
+}
+if (yChoose == 5) {
+    var annotations = [{
+            note: {
+                label: "Statutory crimes include disorderly conduct, prostitution, drug abuse, and other illegal behavior.",
+                lineType: "none", align: "left",
+                wrap: 250, padding: 3      
+            },
+            color: lineColor[yChoose],
+            x: chartOriginX + marginWd, 
+            y: chartOriginX + chartHt * 0.5,
+            dx: 0, dy: 0
+        }]
+        var makeAnnotations = d3.annotation().annotations(annotations)
+        d3.select("#charts").append("g").call(makeAnnotations)
+}
 
 /*
 

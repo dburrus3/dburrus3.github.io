@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+
+<html>
+<head>
+    <title>CS416 Narrative Visualization, Summer 2023, dburrus3@illinois.edu</title>
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+    <script src="https://rawgit.com/susielu/d3-annotation/master/d3-annotation.min.js"></script>
+</head>
+
+<style>
+    h1 { font: 30px Arial Black; color: black; 
+        background-color:rgb(245, 245, 245);}
+    h2 { font: 24px Arial Black; color: black; }
+    body { font: 16px Georgia; color: black; }
+    .prevnext { font: 16px Arial Black; cursor: pointer; text-align: center;
+        border-radius: 8px; border:2px solid darkgreen; width: 18%; padding: 2px 0px;
+        color: darkgreen; background-color:lightgreen;}
+    .prevnext:hover { background-color: darkgreen; color: white; }
+    .dataSelect { font: 12px Arial Black; cursor: pointer; text-align: center;
+        border-radius: 8px; border:2px solid dimgray; width: 12%; padding: 2px 0px;
+        color: black; background-color:lightgray;}
+    .dataSelect:hover { background-color: dimgrey; color: white; }
+    rect {stroke: white;}
+</style>
+
+<body onload="init()">
+
+<h1>Recent Trends</h1>
+<h2>Chicago’s crime rate has improved</h2>
+<p>Bar charts on the previous page show reported crimes for the year 2019.</p>
+<p>During 2020 and 2021, crime rates in Chicago fell an average of <strong>21%</strong>, primarily due to COVID. Crime in 2022 remained <strong>11%</strong> below pre-COVID levels, despite the removal of lockdowns and a general return to normalcy.</p>
+</br>
+<div id="pageButtons">
+    <a href="index.html"><button class="prevnext">< U.S.Cities</button></a>
+    <a href="Quiz_8-1-4.html"><button class="prevnext">Locations ></button></a>
+</div>
+</br>
+<div id="chartButtons">
+    <button class="dataSelect" onClick="choose(2)">Financial</button>
+    <button class="dataSelect" onClick="choose(3)">Violent</button>
+    <button class="dataSelect" onClick="choose(4)">Property</button>
+    <button class="dataSelect" onClick="choose(5)">Statutory</button>
+    <button class="dataSelect" onClick="choose(6)">Total</button>
+</div>
+<div id="chartsdiv"></div>
+
+<script>
+
+const desc = ["Labels", "MonthEnd", "Financial", "Violent", "Property", "Statutory", "Total"]
+function choose(choice){
+    alert("You chose " + choice + " - " + desc[choice]);
+    return(choice)
+}
+console.log("Choice: " + choice)
+
+// init function
+async function init() {
+
+// load and parse data
+const trendsRaw = await d3.csv("https://raw.githubusercontent.com/dburrus3/dburrus3.github.io/main/data/Trends.csv");
+var labels = trendsRaw.map(d => d.YearMo)
+var months = trendsRaw.map(d => d.MonthEnd).map(dateString => new Date(dateString))
+var crimeFina = trendsRaw.map(d => d.Financial).map(Number)
+var crimeViol = trendsRaw.map(d => d.Violent).map(Number)
+var crimeProp = trendsRaw.map(d => d.Property).map(Number)
+var crimeStat = trendsRaw.map(d => d.Statutory).map(Number)
+var crimeTotl = trendsRaw.map(d => d.Total).map(Number)
+trends = [labels, months, crimeFina, crimeViol, crimeProp, crimeStat, crimeTotl]
+
+// set related variables
+var minMonths = new Date(Math.min(...months))
+var maxMonths = new Date(Math.max(...months))
+var minFina = Math.min(...crimeFina)
+var maxFina = Math.max(...crimeFina)
+var minViol = Math.min(...crimeViol)
+var maxViol = Math.max(...crimeViol)
+var minProp = Math.min(...crimeProp)
+var maxProp = Math.max(...crimeProp)
+var minStat = Math.min(...crimeStat)
+var maxStat = Math.max(...crimeStat)
+var minTotl = Math.min(...crimeTotl)
+var maxTotl = Math.max(...crimeTotl)
+
+var numPts = crimeTotl.length;
+var covidStart = labels.indexOf("2020-03");
+var covidEnd = labels.indexOf("2021-06");
+
+// ONE WAY TO EXTRACT X AND Y FOR THE LINE CHART ------------------------
+/* choice = await choose();
+alert("You chose " + choice);
+console.log("Choice: " + choice)
+*/
+
+xChoose = 2;
+yChoose = 6;
+xValues = trends[0,xChoose];
+yValues = trends[0,yChoose];
+xMin = Math.min(...xValues);
+xMax = Math.max(...xValues);
+yMin = Math.min(...yValues);
+yMax = Math.max(...yValues);
+
+const desc = ["Labels", "MonthEnd", "Financial", "Violent", "Property", "Statutory", "Total"];
+console.log("Column X = " + desc[xChoose] + ": " + xValues);
+console.log("Min X: " + xMin + "   Max X: " + xMax);
+console.log("Column Y = " + desc[yChoose] + ": " + yValues);
+console.log("Min Y: " + yMin + "   Max Y: " + yMax);
+console.log(covidEnd);
+
+// set chart widths, heights, origin locations, etc.
+const screenWd = window.innerWidth;
+const screenHt = window.innerHeight; 
+var marginWd = Math.round(screenWd * 0.02);
+var marginHt = Math.round(screenHt * 0.05);
+var marginLabel = Math.round(screenWd * 0.08);
+var chartWd = Math.round((screenWd - 3 * marginWd) - marginLabel);
+var chartHt = Math.round(screenHt * 0.5) - marginLabel;
+var chart1X = marginWd + marginLabel;
+var chart1Y = marginHt;
+
+// set scales for the chart
+var scaleX1 = d3.scaleTime()   //  scaleLinear also works
+    .domain([minMonths, maxMonths])
+    .range([0, chartWd]);
+
+var scaleY1 = d3.scaleLinear()
+    .domain([minTotl, maxTotl])
+    .range([chartHt, 0]);
+
+// create SVG container for both Chart 1 and Chart 2
+const svg = d3.select("#chartsdiv")
+    .append("svg")
+    .attr("width", screenWd - 2 * marginWd)
+    .attr("height", chartHt + marginHt * marginLabel)
+    .attr("id", "charts");
+
+// draw axes for the line chart
+var axisX1 = svg.append("g")
+    .attr("transform","translate(" + chart1X + "," + (chart1Y + chartHt) + ")")
+    .call(d3.axisBottom(scaleX1)
+        .tickFormat(d3.timeFormat("%Y-%m"))
+        .ticks(numPts))
+    .selectAll("text")  
+        .style("text-anchor", "end")
+        .attr("dx", "-.8em")
+        .attr("dy", ".15em")
+        .attr("transform", "rotate(-70)");
+
+var axisY1 = svg.append("g")
+    .attr("transform","translate(" + chart1X + "," + chart1Y + ")")
+    .call(d3.axisLeft(scaleY1));
+    
+var line = d3.line()
+    .x((d,i)=> xScale(d.MonthEnd)) 
+    .y((d,i)=> yScale(d.Total)) 
+
+// draw line based on selected data
+svg.selectAll(".line")
+    .data(trends[0,6])
+    .enter()
+    .append("path")
+    .attr("fill", "none")
+    .attr("stroke", "blue")
+    .attr("stroke-width", 1.5)
+    .attr("d", d3.line()
+    .x(function(d) { return (d.MonthEnd) })
+    .y(function(d) { return (d.Total) })
+    )
+
+// just drawing a random line to see if it's possible
+var line = function(x, y) {
+    return d3.line()
+    .x(function(d,i) { return x[i]*50 + marginLabel; }) 
+    .y(function(d,i) { return y[i]*20 + 110; })
+    (Array(x.length));
+}
+
+</script>
+</body>
+</html>

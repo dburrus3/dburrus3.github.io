@@ -15,13 +15,14 @@
     h2 { font: 24px Arial Black; color: black; }
     body { font: 16px Georgia; color: black; }
     .prevnext { font: 16px Arial Black; cursor: pointer; text-align: center;
-        border-radius: 8px; border:2px solid darkgreen; width: 18%; padding: 2px 0px;
+        border-radius: 8px; border:2px solid darkgreen; width: 15%; padding: 2px 0px;
         color: darkgreen; background-color:lightgreen;}
     .prevnext:hover { background-color: darkgreen; color: white; }
     .dataSelect { font: 12px Arial Black; cursor: pointer; text-align: center;
-        border-radius: 8px; border:2px solid dimgray; width: 12%; padding: 2px 0px;
-        color: black; background-color:lightgray;}
-    .dataSelect:hover { background-color: dimgrey; color: white; }
+        border-radius: 8px; border:1px solid Navy; width: 10%; padding: 2px 0px;
+        color: black; background-color:LightSkyBlue;}
+    .dataSelect:hover { background-color: Navy; color: white; }
+    .gridlines line { stroke: gray; stroke-opacity: 0.6; }
     rect {stroke: white;}
 </style>
 
@@ -43,75 +44,75 @@
     <button class="dataSelect" onClick="choose(4)">Property</button>
     <button class="dataSelect" onClick="choose(5)">Statutory</button>
     <button class="dataSelect" onClick="choose(6)">Total</button>
+    <button class="dataSelect" onClick="test()">TEST</button>
 </div>
 <div id="chartsdiv"></div>
 
 <script>
+// initially display Total Crimes, which is stored in trends[] column 6
+var user = 6;
 
-const desc = ["Labels", "MonthEnd", "Financial", "Violent", "Property", "Statutory", "Total"]
-var user;
-function choose(choice){
-    alert("You chose " + choice + " - " + desc[choice]);
-    user = choice;
+function choose(series){
+    // alert("You chose " + series + " - " + desc[series]);
+    user = series;
+    return user;
 }
 function test(click) {
-    alert("You clicked on " + user)
+    const desc = ["Labels", "MonthEnd", "Financial", "Violent", "Property", "Statutory", "Total"]
+    alert("You clicked on " + user + " - " + desc[user])
+    console.log("Choice: " + user)
 }
-console.log("Choice: " + user)
 
 // init function
 async function init() {
 
 // load and parse data
 const trendsRaw = await d3.csv("https://raw.githubusercontent.com/dburrus3/dburrus3.github.io/main/data/Trends.csv");
-var labels = trendsRaw.map(d => d.YearMo)
-var months = trendsRaw.map(d => d.MonthEnd).map(dateString => new Date(dateString))
-var crimeFina = trendsRaw.map(d => d.Financial).map(Number)
-var crimeViol = trendsRaw.map(d => d.Violent).map(Number)
-var crimeProp = trendsRaw.map(d => d.Property).map(Number)
-var crimeStat = trendsRaw.map(d => d.Statutory).map(Number)
-var crimeTotl = trendsRaw.map(d => d.Total).map(Number)
-trends = [labels, months, crimeFina, crimeViol, crimeProp, crimeStat, crimeTotl]
+var labels = trendsRaw.map(d => d.YearMo);
+var months = trendsRaw.map(d => d.MonthEnd).map(dateString => new Date(dateString));
+var crimeFina = trendsRaw.map(d => d.Financial).map(Number);
+var crimeViol = trendsRaw.map(d => d.Violent).map(Number);
+var crimeProp = trendsRaw.map(d => d.Property).map(Number);
+var crimeStat = trendsRaw.map(d => d.Statutory).map(Number);
+var crimeTotl = trendsRaw.map(d => d.Total).map(Number);
+trends = [labels, months, crimeFina, crimeViol, crimeProp, crimeStat, crimeTotl];
 
 // set related variables
-var minMonths = new Date(Math.min(...months))
-var maxMonths = new Date(Math.max(...months))
-var minFina = Math.min(...crimeFina)
-var maxFina = Math.max(...crimeFina)
-var minViol = Math.min(...crimeViol)
-var maxViol = Math.max(...crimeViol)
-var minProp = Math.min(...crimeProp)
-var maxProp = Math.max(...crimeProp)
-var minStat = Math.min(...crimeStat)
-var maxStat = Math.max(...crimeStat)
-var minTotl = Math.min(...crimeTotl)
-var maxTotl = Math.max(...crimeTotl)
+var minMonths = new Date(Math.min(...months));
+var maxMonths = new Date(Math.max(...months));
+var minFina = Math.min(...crimeFina);
+var maxFina = Math.max(...crimeFina);
+var minViol = Math.min(...crimeViol);
+var maxViol = Math.max(...crimeViol);
+var minProp = Math.min(...crimeProp);
+var maxProp = Math.max(...crimeProp);
+var minStat = Math.min(...crimeStat);
+var maxStat = Math.max(...crimeStat);
+var minTotl = Math.min(...crimeTotl);
+var maxTotl = Math.max(...crimeTotl);
 
 var numPts = crimeTotl.length;
-var covidStart = labels.indexOf("2020-03");
-var covidEnd = labels.indexOf("2021-06");
+var covidStart = labels.indexOf("2020-02");
+var covidEnd = labels.indexOf("2021-07");
 
 // ONE WAY TO EXTRACT X AND Y FOR THE LINE CHART ------------------------
-/* choice = await choose();
-alert("You chose " + choice);
-console.log("Choice: " + choice)
-*/
+//choice = await choose();
+//alert("You chose " + choice);
+console.log("Choice: " + user)
 
-xChoose = 2;
-yChoose = 6;
+// select data to display
+xChoose = 1;  // the x-axis will not change
+yChoose = user;  // should come from button click
 xValues = trends[0,xChoose];
 yValues = trends[0,yChoose];
 xMin = Math.min(...xValues);
 xMax = Math.max(...xValues);
-yMin = Math.min(...yValues);
-yMax = Math.max(...yValues);
+yMin = Math.min(...yValues) * 0.50;
+yMax = Math.max(...yValues) * 1.10;
+data = [xValues, yValues];
+seriesName = ["Labels", "MonthEnd", "Financial", "Violent", "Property", "Statutory", "Total"];
+lineColor = ["Gray", "CadetBlue", "ForestGreen", "FireBrick", "DarkOrange", "HotPink", "DodgerBlue"];
 
-const desc = ["Labels", "MonthEnd", "Financial", "Violent", "Property", "Statutory", "Total"];
-console.log("Column X = " + desc[xChoose] + ": " + xValues);
-console.log("Min X: " + xMin + "   Max X: " + xMax);
-console.log("Column Y = " + desc[yChoose] + ": " + yValues);
-console.log("Min Y: " + yMin + "   Max Y: " + yMax);
-console.log(covidEnd);
 
 // set chart widths, heights, origin locations, etc.
 const screenWd = window.innerWidth;
@@ -120,17 +121,17 @@ var marginWd = Math.round(screenWd * 0.02);
 var marginHt = Math.round(screenHt * 0.05);
 var marginLabel = Math.round(screenWd * 0.08);
 var chartWd = Math.round((screenWd - 3 * marginWd) - marginLabel);
-var chartHt = Math.round(screenHt * 0.5) - marginLabel;
-var chart1X = marginWd + marginLabel;
-var chart1Y = marginHt;
+var chartHt = Math.round(screenHt * 0.8) - marginLabel;
+var chartOriginX = marginWd + marginLabel;
+var chartOriginY = marginHt;
 
 // set scales for the chart
-var scaleX1 = d3.scaleTime()   //  scaleLinear also works
-    .domain([minMonths, maxMonths])
+var scaleX = d3.scaleTime()   //  scaleLinear also works
+    .domain([xMin, xMax])
     .range([0, chartWd]);
 
-var scaleY1 = d3.scaleLinear()
-    .domain([minTotl, maxTotl])
+var scaleY = d3.scaleLinear()
+    .domain([yMin, yMax])
     .range([chartHt, 0]);
 
 // create SVG container for both Chart 1 and Chart 2
@@ -141,9 +142,9 @@ const svg = d3.select("#chartsdiv")
     .attr("id", "charts");
 
 // draw axes for the line chart
-var axisX1 = svg.append("g")
-    .attr("transform","translate(" + chart1X + "," + (chart1Y + chartHt) + ")")
-    .call(d3.axisBottom(scaleX1)
+var axisX = svg.append("g")
+    .attr("transform","translate(" + chartOriginX + "," + (chartOriginY + chartHt) + ")")
+    .call(d3.axisBottom(scaleX)
         .tickFormat(d3.timeFormat("%Y-%m"))
         .ticks(numPts))
     .selectAll("text")  
@@ -152,36 +153,113 @@ var axisX1 = svg.append("g")
         .attr("dy", ".15em")
         .attr("transform", "rotate(-70)");
 
-var axisY1 = svg.append("g")
-    .attr("transform","translate(" + chart1X + "," + chart1Y + ")")
-    .call(d3.axisLeft(scaleY1));
+var axisY = svg.append("g")
+    .attr("transform","translate(" + chartOriginX + "," + chartOriginY + ")")
+    .call(d3.axisLeft(scaleY));
     
-var line = d3.line()
-    .x((d,i)=> xScale(d.MonthEnd)) 
-    .y((d,i)=> yScale(d.Total)) 
-
 // draw line based on selected data
-svg.selectAll(".line")
-    .data(trends[0,6])
-    .enter()
-    .append("path")
-    .attr("fill", "none")
-    .attr("stroke", "blue")
-    .attr("stroke-width", 1.5)
-    .attr("d", d3.line()
-    .x(function(d) { return (d.MonthEnd) })
-    .y(function(d) { return (d.Total) })
-    )
-
-// just drawing a random line to see if it's possible
 var line = function(x, y) {
     return d3.line()
-    .x(function(d,i) { return x[i]*50 + marginLabel; }) 
-    .y(function(d,i) { return y[i]*20 + 110; })
-    (Array(x.length));
+    .x(function(d,i) { return scaleX(x[i]); }) 
+    .y(function(d,i) { return scaleY(y[i]); })
+    (Array(x.length)); }
+
+var mypath = svg.append("path")
+    .attr("transform","translate(" + chartOriginX + "," + chartOriginY + ")")    
+    .attr("d", line(xValues,yValues))
+    .attr("stroke", lineColor[yChoose] )
+    .attr("stroke-width", 3)
+    .attr("fill", "none");
+
+var gridX = svg.append("g")
+    .selectAll("line")
+    .data(scaleX.ticks())
+    .join("line")
+    .attr("x1", d => scaleX(d) + chartOriginX)
+    .attr("x2", d => scaleX(d) + chartOriginX)
+    .attr("y1", chartOriginY)
+    .attr("y2", chartOriginY + chartHt)
+    // .attr("class", "gridlines")
+    .attr("stroke", "gray" )
+    .attr("opacity", 0.4);
+
+var gridY = svg.append("g")
+    .selectAll("line")
+    .data(scaleY.ticks())
+    .join("line")
+    .attr("x1", chartOriginX)
+    .attr("x2", chartOriginX + chartWd)
+    .attr("y1", d => scaleY(d) + marginHt)
+    .attr("y2", d => scaleY(d) + marginHt)
+    // .attr("class", "gridlines")
+    .attr("stroke", "gray" )
+    .attr("opacity", 0.4);
+
+// show which series is being displayed
+var chartTitle = svg.append("text")
+    .attr("x", chartOriginX + chartWd / 2)
+    .attr("y", chartOriginY + marginHt / 1.8)
+    .style("text-anchor", "middle")
+    .attr("fill", lineColor[yChoose])
+    .attr("font-family", "Arial Black")
+    .style("font-size", "20px")
+    .attr("background-color", "white")
+    .text(seriesName[user] + " Crimes Reported by Month");
+      
+// set annotation locations for each chart
+var annotX1 = chartOriginX + scaleX(xValues[covidStart]);
+var annotY1 = chartOriginY + scaleY(yValues[covidStart]);
+var annotX2 = chartOriginX + scaleX(xValues[covidEnd]);
+var annotY2 = chartOriginY + scaleY(yValues[covidEnd]);
+
+console.log("ann: " + annotX1 + "," + annotY1)
+
+var annotations = [
+    {
+        note: {
+            label: "COVID reaches Chicago",
+            lineType: "none",
+            orientation: "leftRight", align: "middle",
+            wrap: 100, padding: 3      
+        },
+        // color: "darkred",
+        x: annotX1, y: annotY1,
+        dx: -30, dy: 60
+    }
+]
+var makeAnnotations = d3.annotation().annotations(annotations)
+d3.select("#charts")
+    .append("g")
+    .call(makeAnnotations)
+
+var annotations = [
+{
+    note: {
+        label: "COVID lockdown ends",
+        lineType: "none",
+        align: "middle",
+        wrap: 100, padding: 3      
+    },
+    // color: "black",
+    x: annotX2, y: annotY2,
+    dx: 10, dy: -50
 }
+]
+var makeAnnotations = d3.annotation().annotations(annotations)
+d3.select("#charts")
+    .append("g")
+    .call(makeAnnotations)
+
+/*
+
+*/
 
 }  // end async function
+
 </script>
 </body>
 </html>
+
+<!--
+    
+-->

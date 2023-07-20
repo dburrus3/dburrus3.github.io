@@ -49,11 +49,15 @@
 <script>
 
 const desc = ["Labels", "MonthEnd", "Financial", "Violent", "Property", "Statutory", "Total"]
+var user;
 function choose(choice){
     alert("You chose " + choice + " - " + desc[choice]);
-    return(choice)
+    user = choice;
 }
-// console.log("Choice: " + choose())
+function test(click) {
+    alert("You clicked on " + user)
+}
+console.log("Choice: " + user)
 
 // init function
 async function init() {
@@ -177,6 +181,7 @@ var line = function(x, y) {
     (Array(x.length));
 }
 
+}  // end async function
 </script>
 </body>
 </html>

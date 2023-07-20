@@ -14,10 +14,10 @@
         background-color:rgb(245, 245, 245);}
     h2 { font: 24px Arial Black; color: black; }
     body { font: 16px Georgia; color: black; }
-    button { font: 16px Arial Black; cursor: pointer; text-align: center;
+    .prevnext { font: 16px Arial Black; cursor: pointer; text-align: center;
         border-radius: 8px; border:1px solid darkgreen; width: 18%; padding: 2px 0px;
         color: darkgreen; background-color:lightgreen;}
-    button:hover { background-color: darkgreen; color: white; }
+    .prevnext:hover { background-color: darkgreen; color: white; }
     rect {stroke: white;}
 </style>
 
@@ -30,9 +30,8 @@
 <p>Chicago is the third-largest city in America, but its crime rate just is in the middle of the pack. Of the 30 largest U.S. cities, Chicago ranks 15th based on crimes per 100,000 residents. Of the 100 largest cities, Chicago is ranked 44th.</p>
 <p>Chicago has less crime than Memphis, which is one-fourth of its size, as well as Houston, which has nearly the same population. <strong>Hover over the bars</strong> to see each city's population and crime rate, or click the <strong>button</strong> to learn more.</p>
 </br>
-<div id="container">
-<!--<a href="Quiz_8-2-6.html"><button>< Go Back</button></a>-->    
-    <a href="trends.html"><button>Trends ></button></a>
+<div id="pageButtons">
+    <a href="trends.html"><button class="prevnext">Trends ></button></a>
 </div>
 </br>
 <div id="chartsdiv"></div>
@@ -65,7 +64,7 @@ var marginWd = Math.round(screenWd * 0.02);
 var marginHt = Math.round(screenHt * 0.05);
 var marginLabel = 100; // Math.round(screenWd * 0.08);
 var chartWd = Math.round((screenWd - 3 * marginWd) / 2 - marginLabel);
-var chartHt = Math.round(screenHt * 0.70);
+var chartHt = Math.round(screenHt * 0.65);
 var chart1X = marginWd + marginLabel;
 var chart1Y = marginHt;
 var chart2X = marginWd * 2 + chartWd + 2 * marginLabel;
@@ -104,14 +103,13 @@ var annotY2 = chart2Y + chartHt / numPts1 * (barChgo2 + 0.5);
 const svg = d3.select("#chartsdiv")
     .append("svg")
     .attr("width", screenWd - 2 + marginWd)
-    .attr("height", chartHt + 2 + marginHt)
+    .attr("height", chartHt + 2 * marginHt)
     .attr("id", "charts");
 
 // create tooltip template for both charts
 var tooltip = d3.select("#chartsdiv")
     .append("div")
     .style("position", "absolute")
-    .style("opacity", 0)
     .style("background-color", "lightyellow")
     .style("font-size", "12px")
     .style("border", "solid")
@@ -137,7 +135,7 @@ var mouseOver1 = function(d) {
 var mouseOver2 = function(d) {
     tooltip
         .html(d.City + " has " + "<br>" + fmtCommas(Math.round(d.Crimes100K)) + 
-            " reported crimes" + "<br>" + "per 100K residents")
+            " reported crimes" + "<br>" + "per 100,000 residents")
         .style("opacity", 0.9)
         .transition()
         .duration(100)

@@ -1,4 +1,4 @@
-xLabel,yLabel,xValue,yValue,crimeType,numRpts
+xKey,yKey,xValue,yValue,crimeType,numCrimes
 Hour,Region,00:00,04. Central Chicago,Financial,311
 Hour,Region,01:00,04. Central Chicago,Financial,32
 Hour,Region,02:00,04. Central Chicago,Financial,28

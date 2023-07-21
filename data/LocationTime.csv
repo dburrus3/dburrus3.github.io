@@ -386,18 +386,18 @@ Month,Region,09. Sep,05. West Side,Financial,292
 Month,Region,10. Oct,05. West Side,Financial,266
 Month,Region,11. Nov,05. West Side,Financial,268
 Month,Region,12. Dec,05. West Side,Financial,262
-Month,Location of crime,01. Jan,All Other,Financial,186
-Month,Location of crime,02. Feb,All Other,Financial,137
-Month,Location of crime,03. Mar,All Other,Financial,157
-Month,Location of crime,04. Apr,All Other,Financial,164
-Month,Location of crime,05. May,All Other,Financial,173
-Month,Location of crime,06. Jun,All Other,Financial,170
-Month,Location of crime,07. Jul,All Other,Financial,182
-Month,Location of crime,08. Aug,All Other,Financial,196
-Month,Location of crime,09. Sep,All Other,Financial,201
-Month,Location of crime,10. Oct,All Other,Financial,206
-Month,Location of crime,11. Nov,All Other,Financial,180
-Month,Location of crime,12. Dec,All Other,Financial,184
+Month,Location of crime,01. Jan,Other,Financial,186
+Month,Location of crime,02. Feb,Other,Financial,137
+Month,Location of crime,03. Mar,Other,Financial,157
+Month,Location of crime,04. Apr,Other,Financial,164
+Month,Location of crime,05. May,Other,Financial,173
+Month,Location of crime,06. Jun,Other,Financial,170
+Month,Location of crime,07. Jul,Other,Financial,182
+Month,Location of crime,08. Aug,Other,Financial,196
+Month,Location of crime,09. Sep,Other,Financial,201
+Month,Location of crime,10. Oct,Other,Financial,206
+Month,Location of crime,11. Nov,Other,Financial,180
+Month,Location of crime,12. Dec,Other,Financial,184
 Month,Location of crime,01. Jan,Apartment,Financial,355
 Month,Location of crime,02. Feb,Apartment,Financial,321
 Month,Location of crime,03. Mar,Apartment,Financial,411
@@ -470,13 +470,13 @@ Month,Location of crime,09. Sep,Vehicle,Financial,12
 Month,Location of crime,10. Oct,Vehicle,Financial,8
 Month,Location of crime,11. Nov,Vehicle,Financial,7
 Month,Location of crime,12. Dec,Vehicle,Financial,6
-Day of week,Location of crime,07. Sun,All Other,Financial,189
-Day of week,Location of crime,01. Mon,All Other,Financial,329
-Day of week,Location of crime,02. Tue,All Other,Financial,338
-Day of week,Location of crime,03. Wed,All Other,Financial,324
-Day of week,Location of crime,04. Thu,All Other,Financial,343
-Day of week,Location of crime,05. Fri,All Other,Financial,371
-Day of week,Location of crime,06. Sat,All Other,Financial,242
+Day of week,Location of crime,07. Sun,Other,Financial,189
+Day of week,Location of crime,01. Mon,Other,Financial,329
+Day of week,Location of crime,02. Tue,Other,Financial,338
+Day of week,Location of crime,03. Wed,Other,Financial,324
+Day of week,Location of crime,04. Thu,Other,Financial,343
+Day of week,Location of crime,05. Fri,Other,Financial,371
+Day of week,Location of crime,06. Sat,Other,Financial,242
 Day of week,Location of crime,07. Sun,Apartment,Financial,364
 Day of week,Location of crime,01. Mon,Apartment,Financial,639
 Day of week,Location of crime,02. Tue,Apartment,Financial,692
@@ -519,30 +519,30 @@ Day of week,Location of crime,03. Wed,Vehicle,Financial,5
 Day of week,Location of crime,04. Thu,Vehicle,Financial,17
 Day of week,Location of crime,05. Fri,Vehicle,Financial,15
 Day of week,Location of crime,06. Sat,Vehicle,Financial,21
-Hour,Location of crime,00:00,All Other,Financial,295
-Hour,Location of crime,01:00,All Other,Financial,32
-Hour,Location of crime,02:00,All Other,Financial,21
-Hour,Location of crime,03:00,All Other,Financial,24
-Hour,Location of crime,04:00,All Other,Financial,14
-Hour,Location of crime,05:00,All Other,Financial,16
-Hour,Location of crime,06:00,All Other,Financial,33
-Hour,Location of crime,07:00,All Other,Financial,34
-Hour,Location of crime,08:00,All Other,Financial,77
-Hour,Location of crime,09:00,All Other,Financial,159
-Hour,Location of crime,10:00,All Other,Financial,155
-Hour,Location of crime,11:00,All Other,Financial,124
-Hour,Location of crime,12:00,All Other,Financial,232
-Hour,Location of crime,13:00,All Other,Financial,139
-Hour,Location of crime,14:00,All Other,Financial,109
-Hour,Location of crime,15:00,All Other,Financial,134
-Hour,Location of crime,16:00,All Other,Financial,113
-Hour,Location of crime,17:00,All Other,Financial,123
-Hour,Location of crime,18:00,All Other,Financial,86
-Hour,Location of crime,19:00,All Other,Financial,58
-Hour,Location of crime,20:00,All Other,Financial,46
-Hour,Location of crime,21:00,All Other,Financial,51
-Hour,Location of crime,22:00,All Other,Financial,30
-Hour,Location of crime,23:00,All Other,Financial,31
+Hour,Location of crime,00:00,Other,Financial,295
+Hour,Location of crime,01:00,Other,Financial,32
+Hour,Location of crime,02:00,Other,Financial,21
+Hour,Location of crime,03:00,Other,Financial,24
+Hour,Location of crime,04:00,Other,Financial,14
+Hour,Location of crime,05:00,Other,Financial,16
+Hour,Location of crime,06:00,Other,Financial,33
+Hour,Location of crime,07:00,Other,Financial,34
+Hour,Location of crime,08:00,Other,Financial,77
+Hour,Location of crime,09:00,Other,Financial,159
+Hour,Location of crime,10:00,Other,Financial,155
+Hour,Location of crime,11:00,Other,Financial,124
+Hour,Location of crime,12:00,Other,Financial,232
+Hour,Location of crime,13:00,Other,Financial,139
+Hour,Location of crime,14:00,Other,Financial,109
+Hour,Location of crime,15:00,Other,Financial,134
+Hour,Location of crime,16:00,Other,Financial,113
+Hour,Location of crime,17:00,Other,Financial,123
+Hour,Location of crime,18:00,Other,Financial,86
+Hour,Location of crime,19:00,Other,Financial,58
+Hour,Location of crime,20:00,Other,Financial,46
+Hour,Location of crime,21:00,Other,Financial,51
+Hour,Location of crime,22:00,Other,Financial,30
+Hour,Location of crime,23:00,Other,Financial,31
 Hour,Location of crime,00:00,Apartment,Financial,908
 Hour,Location of crime,01:00,Apartment,Financial,24
 Hour,Location of crime,02:00,Apartment,Financial,25
@@ -4385,18 +4385,18 @@ Month,Region,09. Sep,05. West Side,Violent,1794
 Month,Region,10. Oct,05. West Side,Violent,1720
 Month,Region,11. Nov,05. West Side,Violent,1563
 Month,Region,12. Dec,05. West Side,Violent,1474
-Month,Location of crime,01. Jan,All Other,Violent,449
-Month,Location of crime,02. Feb,All Other,Violent,602
-Month,Location of crime,03. Mar,All Other,Violent,745
-Month,Location of crime,04. Apr,All Other,Violent,618
-Month,Location of crime,05. May,All Other,Violent,829
-Month,Location of crime,06. Jun,All Other,Violent,677
-Month,Location of crime,07. Jul,All Other,Violent,556
-Month,Location of crime,08. Aug,All Other,Violent,605
-Month,Location of crime,09. Sep,All Other,Violent,771
-Month,Location of crime,10. Oct,All Other,Violent,720
-Month,Location of crime,11. Nov,All Other,Violent,609
-Month,Location of crime,12. Dec,All Other,Violent,563
+Month,Location of crime,01. Jan,Other,Violent,449
+Month,Location of crime,02. Feb,Other,Violent,602
+Month,Location of crime,03. Mar,Other,Violent,745
+Month,Location of crime,04. Apr,Other,Violent,618
+Month,Location of crime,05. May,Other,Violent,829
+Month,Location of crime,06. Jun,Other,Violent,677
+Month,Location of crime,07. Jul,Other,Violent,556
+Month,Location of crime,08. Aug,Other,Violent,605
+Month,Location of crime,09. Sep,Other,Violent,771
+Month,Location of crime,10. Oct,Other,Violent,720
+Month,Location of crime,11. Nov,Other,Violent,609
+Month,Location of crime,12. Dec,Other,Violent,563
 Month,Location of crime,01. Jan,Apartment,Violent,1864
 Month,Location of crime,02. Feb,Apartment,Violent,1645
 Month,Location of crime,03. Mar,Apartment,Violent,1830
@@ -4469,13 +4469,13 @@ Month,Location of crime,09. Sep,Vehicle,Violent,96
 Month,Location of crime,10. Oct,Vehicle,Violent,76
 Month,Location of crime,11. Nov,Vehicle,Violent,66
 Month,Location of crime,12. Dec,Vehicle,Violent,59
-Day of week,Location of crime,07. Sun,All Other,Violent,742
-Day of week,Location of crime,01. Mon,All Other,Violent,1191
-Day of week,Location of crime,02. Tue,All Other,Violent,1274
-Day of week,Location of crime,03. Wed,All Other,Violent,1282
-Day of week,Location of crime,04. Thu,All Other,Violent,1344
-Day of week,Location of crime,05. Fri,All Other,Violent,1183
-Day of week,Location of crime,06. Sat,All Other,Violent,728
+Day of week,Location of crime,07. Sun,Other,Violent,742
+Day of week,Location of crime,01. Mon,Other,Violent,1191
+Day of week,Location of crime,02. Tue,Other,Violent,1274
+Day of week,Location of crime,03. Wed,Other,Violent,1282
+Day of week,Location of crime,04. Thu,Other,Violent,1344
+Day of week,Location of crime,05. Fri,Other,Violent,1183
+Day of week,Location of crime,06. Sat,Other,Violent,728
 Day of week,Location of crime,07. Sun,Apartment,Violent,3575
 Day of week,Location of crime,01. Mon,Apartment,Violent,2990
 Day of week,Location of crime,02. Tue,Apartment,Violent,2860
@@ -4518,30 +4518,30 @@ Day of week,Location of crime,03. Wed,Vehicle,Violent,93
 Day of week,Location of crime,04. Thu,Vehicle,Violent,122
 Day of week,Location of crime,05. Fri,Vehicle,Violent,152
 Day of week,Location of crime,06. Sat,Vehicle,Violent,174
-Hour,Location of crime,00:00,All Other,Violent,483
-Hour,Location of crime,01:00,All Other,Violent,151
-Hour,Location of crime,02:00,All Other,Violent,125
-Hour,Location of crime,03:00,All Other,Violent,103
-Hour,Location of crime,04:00,All Other,Violent,102
-Hour,Location of crime,05:00,All Other,Violent,90
-Hour,Location of crime,06:00,All Other,Violent,119
-Hour,Location of crime,07:00,All Other,Violent,202
-Hour,Location of crime,08:00,All Other,Violent,331
-Hour,Location of crime,09:00,All Other,Violent,413
-Hour,Location of crime,10:00,All Other,Violent,393
-Hour,Location of crime,11:00,All Other,Violent,479
-Hour,Location of crime,12:00,All Other,Violent,601
-Hour,Location of crime,13:00,All Other,Violent,541
-Hour,Location of crime,14:00,All Other,Violent,547
-Hour,Location of crime,15:00,All Other,Violent,733
-Hour,Location of crime,16:00,All Other,Violent,406
-Hour,Location of crime,17:00,All Other,Violent,377
-Hour,Location of crime,18:00,All Other,Violent,307
-Hour,Location of crime,19:00,All Other,Violent,301
-Hour,Location of crime,20:00,All Other,Violent,254
-Hour,Location of crime,21:00,All Other,Violent,247
-Hour,Location of crime,22:00,All Other,Violent,227
-Hour,Location of crime,23:00,All Other,Violent,212
+Hour,Location of crime,00:00,Other,Violent,483
+Hour,Location of crime,01:00,Other,Violent,151
+Hour,Location of crime,02:00,Other,Violent,125
+Hour,Location of crime,03:00,Other,Violent,103
+Hour,Location of crime,04:00,Other,Violent,102
+Hour,Location of crime,05:00,Other,Violent,90
+Hour,Location of crime,06:00,Other,Violent,119
+Hour,Location of crime,07:00,Other,Violent,202
+Hour,Location of crime,08:00,Other,Violent,331
+Hour,Location of crime,09:00,Other,Violent,413
+Hour,Location of crime,10:00,Other,Violent,393
+Hour,Location of crime,11:00,Other,Violent,479
+Hour,Location of crime,12:00,Other,Violent,601
+Hour,Location of crime,13:00,Other,Violent,541
+Hour,Location of crime,14:00,Other,Violent,547
+Hour,Location of crime,15:00,Other,Violent,733
+Hour,Location of crime,16:00,Other,Violent,406
+Hour,Location of crime,17:00,Other,Violent,377
+Hour,Location of crime,18:00,Other,Violent,307
+Hour,Location of crime,19:00,Other,Violent,301
+Hour,Location of crime,20:00,Other,Violent,254
+Hour,Location of crime,21:00,Other,Violent,247
+Hour,Location of crime,22:00,Other,Violent,227
+Hour,Location of crime,23:00,Other,Violent,212
 Hour,Location of crime,00:00,Apartment,Violent,1859
 Hour,Location of crime,01:00,Apartment,Violent,897
 Hour,Location of crime,02:00,Apartment,Violent,827
@@ -8384,18 +8384,18 @@ Month,Region,09. Sep,05. West Side,Property,2497
 Month,Region,10. Oct,05. West Side,Property,2939
 Month,Region,11. Nov,05. West Side,Property,2492
 Month,Region,12. Dec,05. West Side,Property,2107
-Month,Location of crime,01. Jan,All Other,Property,383
-Month,Location of crime,02. Feb,All Other,Property,397
-Month,Location of crime,03. Mar,All Other,Property,457
-Month,Location of crime,04. Apr,All Other,Property,441
-Month,Location of crime,05. May,All Other,Property,514
-Month,Location of crime,06. Jun,All Other,Property,616
-Month,Location of crime,07. Jul,All Other,Property,1014
-Month,Location of crime,08. Aug,All Other,Property,653
-Month,Location of crime,09. Sep,All Other,Property,632
-Month,Location of crime,10. Oct,All Other,Property,632
-Month,Location of crime,11. Nov,All Other,Property,537
-Month,Location of crime,12. Dec,All Other,Property,552
+Month,Location of crime,01. Jan,Other,Property,383
+Month,Location of crime,02. Feb,Other,Property,397
+Month,Location of crime,03. Mar,Other,Property,457
+Month,Location of crime,04. Apr,Other,Property,441
+Month,Location of crime,05. May,Other,Property,514
+Month,Location of crime,06. Jun,Other,Property,616
+Month,Location of crime,07. Jul,Other,Property,1014
+Month,Location of crime,08. Aug,Other,Property,653
+Month,Location of crime,09. Sep,Other,Property,632
+Month,Location of crime,10. Oct,Other,Property,632
+Month,Location of crime,11. Nov,Other,Property,537
+Month,Location of crime,12. Dec,Other,Property,552
 Month,Location of crime,01. Jan,Apartment,Property,1018
 Month,Location of crime,02. Feb,Apartment,Property,999
 Month,Location of crime,03. Mar,Apartment,Property,1233
@@ -8468,13 +8468,13 @@ Month,Location of crime,09. Sep,Vehicle,Property,219
 Month,Location of crime,10. Oct,Vehicle,Property,220
 Month,Location of crime,11. Nov,Vehicle,Property,209
 Month,Location of crime,12. Dec,Vehicle,Property,173
-Day of week,Location of crime,07. Sun,All Other,Property,847
-Day of week,Location of crime,01. Mon,All Other,Property,963
-Day of week,Location of crime,02. Tue,All Other,Property,925
-Day of week,Location of crime,03. Wed,All Other,Property,977
-Day of week,Location of crime,04. Thu,All Other,Property,934
-Day of week,Location of crime,05. Fri,All Other,Property,1146
-Day of week,Location of crime,06. Sat,All Other,Property,1036
+Day of week,Location of crime,07. Sun,Other,Property,847
+Day of week,Location of crime,01. Mon,Other,Property,963
+Day of week,Location of crime,02. Tue,Other,Property,925
+Day of week,Location of crime,03. Wed,Other,Property,977
+Day of week,Location of crime,04. Thu,Other,Property,934
+Day of week,Location of crime,05. Fri,Other,Property,1146
+Day of week,Location of crime,06. Sat,Other,Property,1036
 Day of week,Location of crime,07. Sun,Apartment,Property,1907
 Day of week,Location of crime,01. Mon,Apartment,Property,2129
 Day of week,Location of crime,02. Tue,Apartment,Property,2093
@@ -8517,30 +8517,30 @@ Day of week,Location of crime,03. Wed,Vehicle,Property,311
 Day of week,Location of crime,04. Thu,Vehicle,Property,319
 Day of week,Location of crime,05. Fri,Vehicle,Property,301
 Day of week,Location of crime,06. Sat,Vehicle,Property,315
-Hour,Location of crime,00:00,All Other,Property,551
-Hour,Location of crime,01:00,All Other,Property,185
-Hour,Location of crime,02:00,All Other,Property,155
-Hour,Location of crime,03:00,All Other,Property,150
-Hour,Location of crime,04:00,All Other,Property,128
-Hour,Location of crime,05:00,All Other,Property,145
-Hour,Location of crime,06:00,All Other,Property,185
-Hour,Location of crime,07:00,All Other,Property,224
-Hour,Location of crime,08:00,All Other,Property,261
-Hour,Location of crime,09:00,All Other,Property,294
-Hour,Location of crime,10:00,All Other,Property,295
-Hour,Location of crime,11:00,All Other,Property,267
-Hour,Location of crime,12:00,All Other,Property,377
-Hour,Location of crime,13:00,All Other,Property,339
-Hour,Location of crime,14:00,All Other,Property,399
-Hour,Location of crime,15:00,All Other,Property,423
-Hour,Location of crime,16:00,All Other,Property,351
-Hour,Location of crime,17:00,All Other,Property,376
-Hour,Location of crime,18:00,All Other,Property,385
-Hour,Location of crime,19:00,All Other,Property,343
-Hour,Location of crime,20:00,All Other,Property,302
-Hour,Location of crime,21:00,All Other,Property,281
-Hour,Location of crime,22:00,All Other,Property,230
-Hour,Location of crime,23:00,All Other,Property,182
+Hour,Location of crime,00:00,Other,Property,551
+Hour,Location of crime,01:00,Other,Property,185
+Hour,Location of crime,02:00,Other,Property,155
+Hour,Location of crime,03:00,Other,Property,150
+Hour,Location of crime,04:00,Other,Property,128
+Hour,Location of crime,05:00,Other,Property,145
+Hour,Location of crime,06:00,Other,Property,185
+Hour,Location of crime,07:00,Other,Property,224
+Hour,Location of crime,08:00,Other,Property,261
+Hour,Location of crime,09:00,Other,Property,294
+Hour,Location of crime,10:00,Other,Property,295
+Hour,Location of crime,11:00,Other,Property,267
+Hour,Location of crime,12:00,Other,Property,377
+Hour,Location of crime,13:00,Other,Property,339
+Hour,Location of crime,14:00,Other,Property,399
+Hour,Location of crime,15:00,Other,Property,423
+Hour,Location of crime,16:00,Other,Property,351
+Hour,Location of crime,17:00,Other,Property,376
+Hour,Location of crime,18:00,Other,Property,385
+Hour,Location of crime,19:00,Other,Property,343
+Hour,Location of crime,20:00,Other,Property,302
+Hour,Location of crime,21:00,Other,Property,281
+Hour,Location of crime,22:00,Other,Property,230
+Hour,Location of crime,23:00,Other,Property,182
 Hour,Location of crime,00:00,Apartment,Property,1348
 Hour,Location of crime,01:00,Apartment,Property,485
 Hour,Location of crime,02:00,Apartment,Property,429
@@ -12383,18 +12383,18 @@ Month,Region,09. Sep,05. West Side,Statutory,749
 Month,Region,10. Oct,05. West Side,Statutory,668
 Month,Region,11. Nov,05. West Side,Statutory,623
 Month,Region,12. Dec,05. West Side,Statutory,616
-Month,Location of crime,01. Jan,All Other,Statutory,159
-Month,Location of crime,02. Feb,All Other,Statutory,234
-Month,Location of crime,03. Mar,All Other,Statutory,319
-Month,Location of crime,04. Apr,All Other,Statutory,234
-Month,Location of crime,05. May,All Other,Statutory,295
-Month,Location of crime,06. Jun,All Other,Statutory,268
-Month,Location of crime,07. Jul,All Other,Statutory,205
-Month,Location of crime,08. Aug,All Other,Statutory,238
-Month,Location of crime,09. Sep,All Other,Statutory,249
-Month,Location of crime,10. Oct,All Other,Statutory,282
-Month,Location of crime,11. Nov,All Other,Statutory,215
-Month,Location of crime,12. Dec,All Other,Statutory,194
+Month,Location of crime,01. Jan,Other,Statutory,159
+Month,Location of crime,02. Feb,Other,Statutory,234
+Month,Location of crime,03. Mar,Other,Statutory,319
+Month,Location of crime,04. Apr,Other,Statutory,234
+Month,Location of crime,05. May,Other,Statutory,295
+Month,Location of crime,06. Jun,Other,Statutory,268
+Month,Location of crime,07. Jul,Other,Statutory,205
+Month,Location of crime,08. Aug,Other,Statutory,238
+Month,Location of crime,09. Sep,Other,Statutory,249
+Month,Location of crime,10. Oct,Other,Statutory,282
+Month,Location of crime,11. Nov,Other,Statutory,215
+Month,Location of crime,12. Dec,Other,Statutory,194
 Month,Location of crime,01. Jan,Apartment,Statutory,343
 Month,Location of crime,02. Feb,Apartment,Statutory,358
 Month,Location of crime,03. Mar,Apartment,Statutory,456
@@ -12467,13 +12467,13 @@ Month,Location of crime,09. Sep,Vehicle,Statutory,37
 Month,Location of crime,10. Oct,Vehicle,Statutory,38
 Month,Location of crime,11. Nov,Vehicle,Statutory,44
 Month,Location of crime,12. Dec,Vehicle,Statutory,26
-Day of week,Location of crime,07. Sun,All Other,Statutory,295
-Day of week,Location of crime,01. Mon,All Other,Statutory,431
-Day of week,Location of crime,02. Tue,All Other,Statutory,479
-Day of week,Location of crime,03. Wed,All Other,Statutory,475
-Day of week,Location of crime,04. Thu,All Other,Statutory,484
-Day of week,Location of crime,05. Fri,All Other,Statutory,430
-Day of week,Location of crime,06. Sat,All Other,Statutory,298
+Day of week,Location of crime,07. Sun,Other,Statutory,295
+Day of week,Location of crime,01. Mon,Other,Statutory,431
+Day of week,Location of crime,02. Tue,Other,Statutory,479
+Day of week,Location of crime,03. Wed,Other,Statutory,475
+Day of week,Location of crime,04. Thu,Other,Statutory,484
+Day of week,Location of crime,05. Fri,Other,Statutory,430
+Day of week,Location of crime,06. Sat,Other,Statutory,298
 Day of week,Location of crime,07. Sun,Apartment,Statutory,574
 Day of week,Location of crime,01. Mon,Apartment,Statutory,671
 Day of week,Location of crime,02. Tue,Apartment,Statutory,721
@@ -12516,30 +12516,30 @@ Day of week,Location of crime,03. Wed,Vehicle,Statutory,94
 Day of week,Location of crime,04. Thu,Vehicle,Statutory,91
 Day of week,Location of crime,05. Fri,Vehicle,Statutory,89
 Day of week,Location of crime,06. Sat,Vehicle,Statutory,82
-Hour,Location of crime,00:00,All Other,Statutory,167
-Hour,Location of crime,01:00,All Other,Statutory,53
-Hour,Location of crime,02:00,All Other,Statutory,36
-Hour,Location of crime,03:00,All Other,Statutory,33
-Hour,Location of crime,04:00,All Other,Statutory,28
-Hour,Location of crime,05:00,All Other,Statutory,36
-Hour,Location of crime,06:00,All Other,Statutory,74
-Hour,Location of crime,07:00,All Other,Statutory,109
-Hour,Location of crime,08:00,All Other,Statutory,136
-Hour,Location of crime,09:00,All Other,Statutory,177
-Hour,Location of crime,10:00,All Other,Statutory,270
-Hour,Location of crime,11:00,All Other,Statutory,224
-Hour,Location of crime,12:00,All Other,Statutory,198
-Hour,Location of crime,13:00,All Other,Statutory,160
-Hour,Location of crime,14:00,All Other,Statutory,165
-Hour,Location of crime,15:00,All Other,Statutory,153
-Hour,Location of crime,16:00,All Other,Statutory,168
-Hour,Location of crime,17:00,All Other,Statutory,112
-Hour,Location of crime,18:00,All Other,Statutory,111
-Hour,Location of crime,19:00,All Other,Statutory,130
-Hour,Location of crime,20:00,All Other,Statutory,111
-Hour,Location of crime,21:00,All Other,Statutory,94
-Hour,Location of crime,22:00,All Other,Statutory,74
-Hour,Location of crime,23:00,All Other,Statutory,73
+Hour,Location of crime,00:00,Other,Statutory,167
+Hour,Location of crime,01:00,Other,Statutory,53
+Hour,Location of crime,02:00,Other,Statutory,36
+Hour,Location of crime,03:00,Other,Statutory,33
+Hour,Location of crime,04:00,Other,Statutory,28
+Hour,Location of crime,05:00,Other,Statutory,36
+Hour,Location of crime,06:00,Other,Statutory,74
+Hour,Location of crime,07:00,Other,Statutory,109
+Hour,Location of crime,08:00,Other,Statutory,136
+Hour,Location of crime,09:00,Other,Statutory,177
+Hour,Location of crime,10:00,Other,Statutory,270
+Hour,Location of crime,11:00,Other,Statutory,224
+Hour,Location of crime,12:00,Other,Statutory,198
+Hour,Location of crime,13:00,Other,Statutory,160
+Hour,Location of crime,14:00,Other,Statutory,165
+Hour,Location of crime,15:00,Other,Statutory,153
+Hour,Location of crime,16:00,Other,Statutory,168
+Hour,Location of crime,17:00,Other,Statutory,112
+Hour,Location of crime,18:00,Other,Statutory,111
+Hour,Location of crime,19:00,Other,Statutory,130
+Hour,Location of crime,20:00,Other,Statutory,111
+Hour,Location of crime,21:00,Other,Statutory,94
+Hour,Location of crime,22:00,Other,Statutory,74
+Hour,Location of crime,23:00,Other,Statutory,73
 Hour,Location of crime,00:00,Apartment,Statutory,470
 Hour,Location of crime,01:00,Apartment,Statutory,107
 Hour,Location of crime,02:00,Apartment,Statutory,132
@@ -16382,18 +16382,18 @@ Month,Region,09. Sep,05. West Side,All,5332
 Month,Region,10. Oct,05. West Side,All,5593
 Month,Region,11. Nov,05. West Side,All,4946
 Month,Region,12. Dec,05. West Side,All,4459
-Month,Location of crime,01. Jan,All Other,All,1177
-Month,Location of crime,02. Feb,All Other,All,1370
-Month,Location of crime,03. Mar,All Other,All,1678
-Month,Location of crime,04. Apr,All Other,All,1457
-Month,Location of crime,05. May,All Other,All,1811
-Month,Location of crime,06. Jun,All Other,All,1731
-Month,Location of crime,07. Jul,All Other,All,1957
-Month,Location of crime,08. Aug,All Other,All,1692
-Month,Location of crime,09. Sep,All Other,All,1853
-Month,Location of crime,10. Oct,All Other,All,1840
-Month,Location of crime,11. Nov,All Other,All,1541
-Month,Location of crime,12. Dec,All Other,All,1493
+Month,Location of crime,01. Jan,Other,All,1177
+Month,Location of crime,02. Feb,Other,All,1370
+Month,Location of crime,03. Mar,Other,All,1678
+Month,Location of crime,04. Apr,Other,All,1457
+Month,Location of crime,05. May,Other,All,1811
+Month,Location of crime,06. Jun,Other,All,1731
+Month,Location of crime,07. Jul,Other,All,1957
+Month,Location of crime,08. Aug,Other,All,1692
+Month,Location of crime,09. Sep,Other,All,1853
+Month,Location of crime,10. Oct,Other,All,1840
+Month,Location of crime,11. Nov,Other,All,1541
+Month,Location of crime,12. Dec,Other,All,1493
 Month,Location of crime,01. Jan,Apartment,All,3580
 Month,Location of crime,02. Feb,Apartment,All,3323
 Month,Location of crime,03. Mar,Apartment,All,3930
@@ -16466,13 +16466,13 @@ Month,Location of crime,09. Sep,Vehicle,All,364
 Month,Location of crime,10. Oct,Vehicle,All,342
 Month,Location of crime,11. Nov,Vehicle,All,326
 Month,Location of crime,12. Dec,Vehicle,All,264
-Day of week,Location of crime,07. Sun,All Other,All,2073
-Day of week,Location of crime,01. Mon,All Other,All,2914
-Day of week,Location of crime,02. Tue,All Other,All,3016
-Day of week,Location of crime,03. Wed,All Other,All,3058
-Day of week,Location of crime,04. Thu,All Other,All,3105
-Day of week,Location of crime,05. Fri,All Other,All,3130
-Day of week,Location of crime,06. Sat,All Other,All,2304
+Day of week,Location of crime,07. Sun,Other,All,2073
+Day of week,Location of crime,01. Mon,Other,All,2914
+Day of week,Location of crime,02. Tue,Other,All,3016
+Day of week,Location of crime,03. Wed,Other,All,3058
+Day of week,Location of crime,04. Thu,Other,All,3105
+Day of week,Location of crime,05. Fri,Other,All,3130
+Day of week,Location of crime,06. Sat,Other,All,2304
 Day of week,Location of crime,07. Sun,Apartment,All,6420
 Day of week,Location of crime,01. Mon,Apartment,All,6429
 Day of week,Location of crime,02. Tue,Apartment,All,6366
@@ -16515,30 +16515,30 @@ Day of week,Location of crime,03. Wed,Vehicle,All,503
 Day of week,Location of crime,04. Thu,Vehicle,All,549
 Day of week,Location of crime,05. Fri,Vehicle,All,557
 Day of week,Location of crime,06. Sat,Vehicle,All,592
-Hour,Location of crime,00:00,All Other,All,1496
-Hour,Location of crime,01:00,All Other,All,421
-Hour,Location of crime,02:00,All Other,All,337
-Hour,Location of crime,03:00,All Other,All,310
-Hour,Location of crime,04:00,All Other,All,272
-Hour,Location of crime,05:00,All Other,All,287
-Hour,Location of crime,06:00,All Other,All,411
-Hour,Location of crime,07:00,All Other,All,569
-Hour,Location of crime,08:00,All Other,All,805
-Hour,Location of crime,09:00,All Other,All,1043
-Hour,Location of crime,10:00,All Other,All,1113
-Hour,Location of crime,11:00,All Other,All,1094
-Hour,Location of crime,12:00,All Other,All,1408
-Hour,Location of crime,13:00,All Other,All,1179
-Hour,Location of crime,14:00,All Other,All,1220
-Hour,Location of crime,15:00,All Other,All,1443
-Hour,Location of crime,16:00,All Other,All,1038
-Hour,Location of crime,17:00,All Other,All,988
-Hour,Location of crime,18:00,All Other,All,889
-Hour,Location of crime,19:00,All Other,All,832
-Hour,Location of crime,20:00,All Other,All,713
-Hour,Location of crime,21:00,All Other,All,673
-Hour,Location of crime,22:00,All Other,All,561
-Hour,Location of crime,23:00,All Other,All,498
+Hour,Location of crime,00:00,Other,All,1496
+Hour,Location of crime,01:00,Other,All,421
+Hour,Location of crime,02:00,Other,All,337
+Hour,Location of crime,03:00,Other,All,310
+Hour,Location of crime,04:00,Other,All,272
+Hour,Location of crime,05:00,Other,All,287
+Hour,Location of crime,06:00,Other,All,411
+Hour,Location of crime,07:00,Other,All,569
+Hour,Location of crime,08:00,Other,All,805
+Hour,Location of crime,09:00,Other,All,1043
+Hour,Location of crime,10:00,Other,All,1113
+Hour,Location of crime,11:00,Other,All,1094
+Hour,Location of crime,12:00,Other,All,1408
+Hour,Location of crime,13:00,Other,All,1179
+Hour,Location of crime,14:00,Other,All,1220
+Hour,Location of crime,15:00,Other,All,1443
+Hour,Location of crime,16:00,Other,All,1038
+Hour,Location of crime,17:00,Other,All,988
+Hour,Location of crime,18:00,Other,All,889
+Hour,Location of crime,19:00,Other,All,832
+Hour,Location of crime,20:00,Other,All,713
+Hour,Location of crime,21:00,Other,All,673
+Hour,Location of crime,22:00,Other,All,561
+Hour,Location of crime,23:00,Other,All,498
 Hour,Location of crime,00:00,Apartment,All,4585
 Hour,Location of crime,01:00,Apartment,All,1513
 Hour,Location of crime,02:00,Apartment,All,1413

@@ -10,15 +10,19 @@
 </head>
 
 <style>
-    h1 { font: 30px Arial Black; color: black; 
+    h1 { font: 30px Arial; font-weight: 900; color: black; 
         background-color:rgb(245, 245, 245);}
-    h2 { font: 24px Arial Black; color: black; }
+    h2 { font: 24px Arial; font-weight: 900; color: black; }
     body { font: 16px Georgia; color: black; }
-    .prevnext { font: 16px Arial Black; cursor: pointer; text-align: center;
-        border-radius: 8px; border:1px solid DimGray; width: 15%; padding: 2px 0px;
+    .prevnext { font: 16px Arial; font-weight: 900; 
+        cursor: pointer; text-align: center;
+        border-radius: 8px; border:1px solid DimGray; 
+        width: 15%; padding: 2px 0px;
         color: Black; background-color:LightGray;}
     .prevnext:hover { background-color: DimGray; color: white; }
-    rect {stroke: white;}
+    .dropdown { font: 14px Arial; font-weight: 600; padding: 2px; width: 15%;
+        background-color: LightSkyBlue; }
+    rect { stroke: white; }
 </style>
 
 <body onload="init()">
@@ -29,7 +33,7 @@
 <p>Patterns of criminal activity also vary by weekday, time of day, and location. In the heat map below, each tile indicates relative frequency of crime for a particular combination of time interval (on the x-axis) and location (on the y-axis) during calendar 2022. <strong>Click on the X-axis pulldown</strong> to explore different time intervals.</p>
 <p>Chicago is divided into 9 regions, such as "Far North Side" and "West Side". These nine regions are subdivided into 77 named communities, as shown on the maps below. To explore the impact of location on criminal activity, <strong>click on the Y-axis pulldown</strong>.</p>
 <p>To explore how different types of crime vary by time and location, <strong>click on the Filter pulldown</strong>.</p>
-<p>You may wish to start with these combinations: Region/Month/Total; compare Region/Hour/Financial vs. Region/Hour/Violent; and compare Location/Day/Statutory vs. Location/Day/Property.</p>
+<p>As a starting point, you may wish to compare: (a) Region/Month/Total; (b) Region/Hour/Financial vs. Region/Hour/Violent; and (c) Location/Day/Statutory vs. Location/Day/Property.</p>
 </br>
 <div id="pageButtons">
     <a href="trends.html"><button class="prevnext">< Trends</button></a>
@@ -59,6 +63,104 @@ var type = "Total";
 
 // init function
 async function init() {
+    // load data for both charts and set related variables
+    const locTimeRaw = await d3.csv("https://raw.githubusercontent.com/dburrus3/dburrus3.github.io/main/data/LocationTime.csv");
+    
+    // set filter parameters for initial load
+    var timeDefault = "Month";   // Hour, Day, Month
+    var placeDefault = "Region";  // Community, Location, Region
+    var typeDefault = "Total";  // Financial, Property, Statutory, Violent, Total
+    // chartData = getData(locTimeRaw, time, place, type);
+
+    // set list of values for each dropdown button
+    var xKeyList = d3.map(locTimeRaw, function(d){return d.xKey;}).keys().sort().reverse()
+    var yKeyList = d3.map(locTimeRaw, function(d){return d.yKey;}).keys().sort()
+    var crimeList = d3.map(locTimeRaw, function(d){return d.crimeType;}).keys().sort()
+    
+    // dropdown buttons
+    var selectTime = d3.select("#chartButtons") 
+        .append("select")
+        .attr("class", "dropdown") 
+        .on("change", function(d) {
+            time = this.value;
+            console.log("time:" + time + ", place:" + place + ", type:" + type); 
+            chartData = getData(locTimeRaw, time, place, type);
+            drawChart(chartData, time, place, type);
+        })
+
+    var optionsTime = selectTime
+        .selectAll("option")
+        .data(xKeyList).enter()
+        .append("option")
+        .text(function (d) { return d; })   // text in dropdown menu
+        .attr("value", function (d) { return d; })   // value returned by button
+        .property("selected", function(d){ return d === timeDefault; });   // default selection
+
+    var selectPlace = d3.select("#chartButtons") 
+        .append("select")
+        .attr("class", "dropdown")
+        .on("change", function(d) {
+            place = this.value;
+            console.log("time:" + time + ", place:" + place + ", type:" + type); 
+            chartData = getData(locTimeRaw, time, place, type);
+            drawChart(chartData, time, place, type);
+        })
+
+    var optionsPlace = selectPlace
+        .selectAll("option")
+        .data(yKeyList).enter()
+        .append("option")
+        .text(function (d) { return d; })
+        .property("selected", function(d){ return d === placeDefault; });
+
+    var selectCrime = d3.select("#chartButtons") 
+        .append("select")
+        .attr("class", "dropdown")
+        .on("change", function(d) {
+            type = this.value;
+            console.log("time:" + time + ", place:" + place + ", type:" + type); 
+            chartData = getData(locTimeRaw, time, place, type);
+            drawChart(chartData, time, place, type);
+        })
+
+    var optionsCrime = selectCrime
+        .selectAll("option")
+        .data(crimeList).enter()
+        .append("option")
+        .text(function (d) { return d; })
+        .property("selected", function(d){ return d === typeDefault; });
+
+    function onchange() {
+        chartData = getData(locTimeRaw, time, place, type);
+        drawChart(chartData, time, place, type)
+    };
+  
+    // get data based on user selection of axes and filter
+    chartData = getData(locTimeRaw, time, place, type);
+    drawChart(chartData, time, place, type)
+
+}  // end async function
+
+function getData(dataArray, time, place, type) {
+    var arrFiltX = dataArray.filter((item) => {
+        return Object.keys(item).some((key) => item[key].includes(time));
+    }); 
+    var arrFiltXY = arrFiltX.filter((item) => {
+        return Object.keys(item).some((key) => item[key].includes(place));
+    });
+    var arrFiltXYZ = arrFiltXY.filter((item) => {
+        return Object.keys(item).some((key) => item[key].includes(type));
+    });
+    return arrFiltXYZ;
+}  // end getData function
+
+function clearChart() {
+    d3.select("#chartsdiv").selectAll("*").remove();
+}
+
+function drawChart(chartData, time, place, type) {
+    clearChart();
+    console.log("drawChart - time:" + time + ", place:" + place + ", type:" + type);
     // set chart widths, heights, origin locations, etc.
     var screen = {width: window.innerWidth, height: window.innerHeight}; 
     var margin = {left: 40, right: 20, top: 20, bottom: 20, label: 120};
@@ -76,61 +178,6 @@ async function init() {
             .attr("id", "heatmap")
         .append("g")
             .attr("transform", "translate(" + origin.x1 + "," + origin.y1 + ")");
-
-    // load data for both charts and set related variables
-    const locTimeRaw = await d3.csv("https://raw.githubusercontent.com/dburrus3/dburrus3.github.io/main/data/LocationTime.csv");
-    
-    // set list of values for each dropdown button
-    var xKeyList = d3.map(locTimeRaw, function(d){return d.xKey;}).keys().sort().reverse()
-    var yKeyList = d3.map(locTimeRaw, function(d){return d.yKey;}).keys().sort()
-    var crimeList = d3.map(locTimeRaw, function(d){return d.crimeType;}).keys().sort()
-    
-    var selectTime = d3.select("#chartButtons") 
-        .append("select")
-        .attr("class", "select") 
-        .on("change", onchange);
-
-    var optionsTime = selectTime
-        .selectAll("option")
-        .data(xKeyList).enter()
-        .append("option")
-        .text(function (d) { return d; })   // text in dropdown menu
-        .attr("value", function (d) { return d; })   // value returned by button
-
-    var selectLoc = d3.select("#chartButtons") 
-        .append("select")
-        .attr("class", "select")
-        .on("change", onchange);
-
-    var optionsLoc = selectLoc
-        .selectAll("option")
-        .data(yKeyList).enter()
-        .append("option")
-        .text(function (d) { return d; });
-
-    var selectCrime = d3.select("#chartButtons") 
-        .append("select")
-        .attr("class", "select")
-        .on("change", onchange);
-
-    var optionsCrime = selectCrime
-        .selectAll("option")
-        .data(crimeList).enter()
-        .append("option")
-        .text(function (d) { return d; });
-
-    function onchange() {
-        selectValue = d3.select("select").property("value")
-        d3.select('body')
-            .append('p')
-            .text(selectValue + ' is the last selected option.')};
-  
-    
-    // get data based on user selection of axes and filter
-    var time = "Month";   // Hour, Day, Month
-    var place = "Region";  // Community, Location, Region
-    var type = "Total";  // Financial, Property, Statutory, Violent, Total
-    chartData = getData(locTimeRaw, time, place, type);
 
     // set list of values for each axis
     var xValues = d3.map(chartData, function(d){return d.xValue;}).keys().sort()
@@ -242,40 +289,16 @@ async function init() {
         .data([0])
         .enter()
         .append("svg:image")
-        .attr("xlink:href", "https://raw.githubusercontent.com/dburrus3/dburrus3.github.io/main/data/Chicago_map.png")
+        .attr("xlink:href", "https://raw.githubusercontent.com/dburrus3/dburrus3.github.io/main/data/Chicago_map_large.png")
         .attr("x", origin.x2)
         .attr("y", origin.y2)
         .attr("width", canvas.width - origin.x2)
         .attr("height", chartArea.height);
-
-/* */
-
-}  // end async function
-
-function getData(dataArray, time, place, type) {
-    var arrFiltX = dataArray.filter((item) => {
-        return Object.keys(item).some((key) => item[key].includes(time));
-    }); 
-    var arrFiltXY = arrFiltX.filter((item) => {
-        return Object.keys(item).some((key) => item[key].includes(place));
-    });
-    var arrFiltXYZ = arrFiltXY.filter((item) => {
-        return Object.keys(item).some((key) => item[key].includes(type));
-    });
-    return arrFiltXYZ;
-}
-
-function clearChart() {
-    d3.select("#chartsdiv").selectAll("*").remove();
-}
-
-function drawHeatMap(dataArray, time, place, type) {
-    clearChart();    
-    // all the stuff above, currently in async init()
-}
+    
+}  // end drawChart function
 
 </script>
 </body>
 </html>
 
-<!-- -->
+<!-- end file -->

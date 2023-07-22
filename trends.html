@@ -15,16 +15,16 @@
     h2 { font: 24px Arial Black; color: black; }
     body { font: 16px Georgia; color: black; }
     .prevnext { font: 16px Arial Black; cursor: pointer; text-align: center;
-        border-radius: 8px; border:2px solid darkgreen; width: 15%; padding: 2px 0px;
-        color: darkgreen; background-color:lightgreen;}
-    .prevnext:hover { background-color: darkgreen; color: white; }
+        border-radius: 8px; border:1px solid DimGray; width: 15%; padding: 2px 0px;
+        color: Black; background-color:LightGray;}
+    .prevnext:hover { background-color: DimGray; color: white; }
     .dataSelect { font: 14px Arial Black; cursor: pointer; text-align: center;
         border-radius: 8px; border:1px solid Navy; width: 10%; padding: 2px 0px;
         color: black; background-color:LightSkyBlue;}
     .dataSelect:hover { background-color: MediumBlue; color: white; }
     .dataPressed { font: 14px Arial Black; cursor: pointer; text-align: center;
         border-radius: 8px; border:1px solid Navy; width: 10%; padding: 2px 0px;
-        color: black; background-color:glightgrayold;}
+        color: black; background-color:LightGray;}
     .gridlines line { stroke: gray; stroke-opacity: 0.6; }
     rect {stroke: white;}
 </style>
@@ -35,19 +35,19 @@
 <h2>Chicago’s crime rate has improved</h2>
 <p>Bar charts on the previous page show reported crimes for the year 2019.</p>
 <p>During 2020 and 2021, overall crime rates in Chicago fell an average of <strong>21%</strong>, primarily due to COVID. Crime in 2022 remained <strong>11%</strong> below pre-COVID levels, despite the removal of lockdowns and a general return to normalcy.</p>
-<p>However, not all kinds of crime followed the same trend. Click on the <strong>blue buttons</strong> below to see differences in the four major categories of crime and the latest trends.</p>
+<p>However, not all types of crime followed the same trend. Seasonal changes in criminal activity also vary by type of crime. Click on the <strong>blue buttons</strong> below to see differences in the four major categories of crime and the latest trends.</p>
 </br>
 <div id="pageButtons">
     <a href="index.html"><button class="prevnext">< U.S.Cities</button></a>
-    <a href="Quiz_8-1-4.html"><button class="prevnext">Locations ></button></a>
+    <a href="locations.html"><button class="prevnext">Locations ></button></a>
 </div>
 </br>
 <div id="chartButtons">
     <button class="dataSelect" onClick="clearChart(); drawChart(2);">Financial</button>
-    <button class="dataSelect" onClick="clearChart(); drawChart(3);">Violent</button>
-    <button class="dataSelect" onClick="clearChart(); drawChart(4);">Property</button>
     <button class="dataSelect" onClick="clearChart(); drawChart(5);">Statutory</button>
-    <button class="dataSelect" onClick="clearChart(); drawChart(6);">Total</button>
+    <button class="dataSelect" onClick="clearChart(); drawChart(4);">Property</button>
+    <button class="dataSelect" onClick="clearChart(); drawChart(3);">Violent</button>
+    <button class="dataSelect" onClick="clearChart(); drawChart(6);">All</button>
 </div>
 <div id="chartsdiv"></div>
 
@@ -93,7 +93,7 @@ function drawChart(crimeType) {
     var yMin = Math.min(...yValues) * 0.80;
     var yMax = Math.max(...yValues) * 1.10;
     // chart title, changes based on user-selected series
-    seriesName = ["Labels", "MonthEnd", "Financial", "Violent", "Property", "Statutory", "Total"];
+    seriesName = ["Labels", "MonthEnd", "Financial", "Violent", "Property", "Statutory", "All"];
     // color for line and title, changes based on user-selected series
     lineColor = ["Gray", "CadetBlue", "ForestGreen", "FireBrick", "DarkOrange", "HotPink", "DodgerBlue"];
 
@@ -110,7 +110,7 @@ function drawChart(crimeType) {
     var marginHt = Math.round(screenHt * 0.05);
     var marginLabel = Math.round(screenWd * 0.08);
     var chartWd = Math.round((screenWd - 3 * marginWd) - marginLabel);
-    var chartHt = Math.round(screenHt * 0.6) - marginLabel;
+    var chartHt = Math.round(screenHt * 0.75) - marginLabel;
     var chartOriginX = marginWd + marginLabel;
     var chartOriginY = marginHt;
 
@@ -133,17 +133,19 @@ function drawChart(crimeType) {
     // draw axes for the line chart
     var axisX = svg.append("g")
         .attr("transform","translate(" + chartOriginX + "," + (chartOriginY + chartHt) + ")")
+        .style("font-size", 14)
         .call(d3.axisBottom(scaleX)
             .tickFormat(d3.timeFormat("%Y-%m"))
             .ticks(numPts))
         .selectAll("text")  
             .style("text-anchor", "end")
-            .attr("dx", "-.8em")
-            .attr("dy", ".15em")
+            .attr("dx", "-0.8em")
+            .attr("dy", "0.15em")
             .attr("transform", "rotate(-70)");
 
     var axisY = svg.append("g")
         .attr("transform","translate(" + chartOriginX + "," + chartOriginY + ")")
+        .style("font-size", 14)
         .call(d3.axisLeft(scaleY));
         
     // create SVG path based on user-selected data series

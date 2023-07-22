@@ -10,19 +10,22 @@
 </head>
 
 <style>
-    h1 { font: 30px Arial Black; color: black; 
+    h1 { font: 30px Arial; font-weight: 900; color: black; 
         background-color:rgb(245, 245, 245);}
-    h2 { font: 24px Arial Black; color: black; }
+    h2 { font: 24px Arial; font-weight: 900; color: black; }
     body { font: 16px Georgia; color: black; }
-    .prevnext { font: 16px Arial Black; cursor: pointer; text-align: center;
+    .prevnext { font: 16px Arial; font-weight: 900; 
+        cursor: pointer; text-align: center;
         border-radius: 8px; border:1px solid DimGray; width: 15%; padding: 2px 0px;
         color: Black; background-color:LightGray;}
     .prevnext:hover { background-color: DimGray; color: white; }
-    .dataSelect { font: 14px Arial Black; cursor: pointer; text-align: center;
+    .dataSelect { font: 14px Arial; font-weight: 900; 
+        cursor: pointer; text-align: center;
         border-radius: 8px; border:1px solid Navy; width: 10%; padding: 2px 0px;
         color: black; background-color:LightSkyBlue;}
     .dataSelect:hover { background-color: MediumBlue; color: white; }
-    .dataPressed { font: 14px Arial Black; cursor: pointer; text-align: center;
+    .dataPressed { font: 14px Arial; font-weight: 900; 
+        cursor: pointer; text-align: center;
         border-radius: 8px; border:1px solid Navy; width: 10%; padding: 2px 0px;
         color: black; background-color:LightGray;}
     .gridlines line { stroke: gray; stroke-opacity: 0.6; }
@@ -194,7 +197,8 @@ function drawChart(crimeType) {
         .attr("y", chartOriginY + marginHt / 1.8)
         .style("text-anchor", "middle")
         .attr("fill", lineColor[yChoose])
-        .attr("font-family", "Arial Black")
+        .attr("font-family", "Arial")
+        .style("font-weight", 900)
         .style("font-size", "24px")
         .attr("background-color", "white")
         .text(seriesName[yChoose] + " Crimes Reported by Month, 2016-2022");

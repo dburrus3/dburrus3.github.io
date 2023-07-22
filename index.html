@@ -15,9 +15,9 @@
     h2 { font: 24px Arial Black; color: black; }
     body { font: 16px Georgia; color: black; }
     .prevnext { font: 16px Arial Black; cursor: pointer; text-align: center;
-        border-radius: 8px; border:1px solid darkgreen; width: 18%; padding: 2px 0px;
-        color: darkgreen; background-color:lightgreen;}
-    .prevnext:hover { background-color: darkgreen; color: white; }
+        border-radius: 8px; border:1px solid DimGray; width: 15%; padding: 2px 0px;
+        color: Black; background-color:LightGray;}
+    .prevnext:hover { background-color: DimGray; color: white; }
     rect {stroke: white;}
 </style>
 
@@ -115,45 +115,42 @@ var tooltip = d3.select("#chartsdiv")
     .style("border", "solid")
     .style("border-width", "1px")
     .style("border-radius", "5px")
-    .style("padding", "10px");
+    .style("padding", "5px");
 
 var fmtCommas = function(x) {
     return parseFloat(x).toLocaleString();
 };
 
 // tooltip functions for mouse entry/movement/exit in Charts 1 and 2
-var mouseOver1 = function(d) {
+var mouseOver = function(d) {
+    tooltip
+        .style("left", d3.event.pageX + "px")
+        .style("top", d3.event.pageY + "px")        
+};
+
+var mouseMove1 = function(d) {
     tooltip
         .html(d.City + " has" + "<br>" + fmtCommas(d.Popul2020) + " residents")
         .style("opacity", 0.9)
-        .transition()
-        .duration(100)
-        .style("left", d3.event.pageX + "px")
-        .style("top", d3.event.pageY + "px")
-  }
+        .style("left", (d3.event.pageX + 5) + "px")
+        .style("top", (d3.event.pageY + 0) + "px")
+};
 
-var mouseOver2 = function(d) {
+var mouseMove2 = function(d) {
     tooltip
         .html(d.City + " has " + "<br>" + fmtCommas(Math.round(d.Crimes100K)) + 
             " reported crimes" + "<br>" + "per 100,000 residents")
         .style("opacity", 0.9)
         .transition()
         .duration(100)
-        .style("left", d3.event.pageX + "px")
-        .style("top", d3.event.pageY + "px")
-  }
+        .style("left", (d3.event.pageX + 5) + "px")
+        .style("top", (d3.event.pageY + 0) + "px")
+};
 
-var mouseMove = function(d) {
-    tooltip
-        .style("left", d3.event.pageX + "px")
-        .style("top", d3.event.pageY + "px")
-        //.style("left", (d3.mouse(this)[0]+90) + "px")
-        //.style("top", (d3.mouse(this)[1]) + "px")
-  }
 var mouseOut = function(d) {
     tooltip
         .style("opacity", 0)
-  }
+};
 
 // Chart 1: horizontal bar chart of population by city
 const chart1 = svg.append("g")
@@ -170,22 +167,25 @@ chart1.selectAll("rect")
     .attr("id", "chart1")
     .attr("fill", (_, i) => (i === barChgo1) ? colorPopulChgo : colorPopulOther)
     .style("cursor", "pointer")
-    .on("mouseover", mouseOver1)
-    .on("mousemove", mouseMove)
+    .on("mouseover", mouseOver)
+    .on("mousemove", mouseMove1)
     .on("mouseout", mouseOut);
 
 var axisX1 = svg.append("g")
     .attr("transform","translate(" + chart1X + "," + chart1Y + ")")
+    .style("font-size", 14)
     .call(d3.axisTop(scaleX1)
         .tickFormat(d3.format("~s")).ticks(10));
 
 var axisY1 = svg.append("g")
     .attr("transform","translate(" + chart1X + "," + chart1Y + ")")
-    .call(d3.axisLeft(scaleY1));
+    .style("font-size", 14)
+        .call(d3.axisLeft(scaleY1));
 
 var axisX1label = svg.append("text")      // text label for the x axis
     .attr("x", chart1X + chartWd / 2)
     .attr("y", marginHt / 2)
+    .style("font-size", 16)
     .style("text-anchor", "middle")
     .text("Population");
 
@@ -204,22 +204,25 @@ chart2.selectAll("rect")
     .attr("id", "chart2")
     .attr("fill", (_, i) => (i === barChgo2) ? colorCrimeChgo : colorCrimeOther)
     .style("cursor", "pointer")
-    .on("mouseover", mouseOver2)
-    .on("mousemove", mouseMove)
+    .on("mouseover", mouseOver)
+    .on("mousemove", mouseMove2)
     .on("mouseout", mouseOut);
 
 var axisX2 = svg.append("g")
     .attr("transform","translate(" + chart2X + "," + chart2Y + ")")
+    .style("font-size", 14)
     .call(d3.axisTop(scaleX2)
         .tickFormat(d3.format("~s")).ticks(10));
 
 var axisY2 = svg.append("g")
     .attr("transform","translate(" + chart2X + "," + chart2Y + ")")
-    .call(d3.axisLeft(scaleY2));
+    .style("font-size", 14)
+        .call(d3.axisLeft(scaleY2));
 
 var axisX2label = svg.append("text")      // text label for the x axis
     .attr("x", chart2X + chartWd / 2)
     .attr("y", marginHt / 2)
+    .style("font-size", 16)
     .style("text-anchor", "middle")
     .text("Reported Crimes Per 100,000 Residents");
       

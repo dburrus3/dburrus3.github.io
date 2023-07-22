@@ -128,8 +128,8 @@ async function init() {
     
     // get data based on user selection of axes and filter
     var time = "Month";   // Hour, Day, Month
-    var place = "Community";  // Community, Location, Region
-    var type = "Violent";  // Financial, Property, Statutory, Violent, Total
+    var place = "Region";  // Community, Location, Region
+    var type = "Total";  // Financial, Property, Statutory, Violent, Total
     chartData = getData(locTimeRaw, time, place, type);
 
     // set list of values for each axis
@@ -278,22 +278,4 @@ function drawHeatMap(dataArray, time, place, type) {
 </body>
 </html>
 
-<!--
-// **********************************************************************
-    console.log("xKey list: " + xKeyList);
-    console.log("yKey list: " + yKeyList); 
-    console.log("crimeKey list: " + crimeList); 
-    console.log(chartData); 
-    console.log("numCrimes: " + numCrimes)
-    console.log("Range: " + minCrimes +", " + maxCrimes);
-        
-    console.log("Screen: " + screen.width + ", " + screen.height); 
-    console.log("Canvas: " + canvas.width + ", " + canvas.height); 
-    console.log("Margin: " + margin.left + ", " + margin.top);
-    console.log("Chart size: " + chartArea.width + ", " + chartArea.height);
-    console.log("Chart 1 origin: " + origin.x1 + ", " + origin.y1);
-    console.log("Chart 2 origin: " + origin.x2 + ", " + origin.y2);
-    console.log("Axis lengths: " + xLen + ", " + yLen);
-    
-    
--->
+<!-- -->

@@ -20,8 +20,8 @@
         width: 15%; padding: 2px 0px;
         color: Black; background-color:LightGray;}
     .prevnext:hover { background-color: DimGray; color: white; }
-    .dropdown { font: 14px Arial; font-weight: 600; padding: 2px; width: 15%;
-        background-color: LightSkyBlue; }
+    .dropdown { font: 14px Arial; font-weight: 600; padding: 2px; width: 12%;
+        background-color: LightSkyBlue; margin-right: 10px; }
     rect { stroke: white; }
 </style>
 
@@ -29,11 +29,20 @@
 
 <h1>Where and When</h1>
 <h2>Risk of becoming a victim varies by time and location</h2>
-<p>As shown on the previous page, incidence of crime in Chicago varies widely by time of year. Reported crimes are roughly 15-20% lower during the winter months than during the summer.</p>
-<p>Patterns of criminal activity also vary by weekday, time of day, and location. In the heat map below, each tile indicates relative frequency of crime for a particular combination of time interval (on the x-axis) and location (on the y-axis) during calendar 2022. <strong>Click on the X-axis pulldown</strong> to explore different time intervals.</p>
-<p>Chicago is divided into 9 regions, such as "Far North Side" and "West Side". These nine regions are subdivided into 77 named communities, as shown on the maps below. To explore the impact of location on criminal activity, <strong>click on the Y-axis pulldown</strong>.</p>
-<p>To explore how different types of crime vary by time and location, <strong>click on the Filter pulldown</strong>.</p>
-<p>As a starting point, you may wish to compare: (a) Region/Month/Total; (b) Region/Hour/Financial vs. Region/Hour/Violent; and (c) Location/Day/Statutory vs. Location/Day/Property.</p>
+<p>As shown on the <strong>Trends</strong> page, incidence of crime in Chicago varies widely by time of year. 
+    Reported crimes are roughly 15-20% lower during the winter months than during the summer.</p>
+<p>Patterns of criminal activity also vary by neighborhood, hour of the day, and day of the week. </p>
+<p>In the heat map below, each tile indicates relative frequency of crime for a particular 
+    combination of time interval (on the x-axis) and location (on the y-axis) during calendar 2022. 
+    Red denotes highest incidence of criminal activity; green denotes the lowest.
+    <strong style="color: DarkBlue">Click on the center blue drop-down</strong> below to explore different time intervals.</p>
+<p>Chicago is divided into 9 regions, such as "Far North Side" and "West Side", as shown on the map below. 
+    These nine regions are subdivided into 77 named communities. To explore the impact of 
+    location on criminal activity, <strong style="color: DarkBlue">click on the left blue drop-down</strong>.</p>
+<p>To explore how different types of crime vary by time and location, <strong style="color: DarkBlue">click 
+    on the right blue drop-down</strong>. 
+    As a starting point, you may wish to try: (a) Region/Day/Total; (b) Region/Hour/Financial vs. 
+    Region/Hour/Violent; and (c) Location/Day/Statutory vs. Location/Day/Property.</p>
 </br>
 <div id="pageButtons">
     <a href="trends.html"><button class="prevnext">< Trends</button></a>
@@ -44,21 +53,13 @@
 
 <script>
 
-/*
-TO DO:
-build heat map chart without dropdowns using "test" data and parameters
-create canvas to hold image/map
-build dropdowns to populate chart parameters
-add tooltips when hovering over tiles
-*/
-
 // define "global" variables used by all functions
 var chartData;
 var time, place, type; 
 
 // initial values for populating heat map
-var time = "Month";
 var place = "Region";
+var time = "Month";
 var type = "Total";
 
 // init function
@@ -78,6 +79,23 @@ async function init() {
     var crimeList = d3.map(locTimeRaw, function(d){return d.crimeType;}).keys().sort()
     
     // dropdown buttons
+    var selectPlace = d3.select("#chartButtons") 
+        .append("select")
+        .attr("class", "dropdown")
+        .on("change", function(d) {
+            place = this.value;
+            console.log("time:" + time + ", place:" + place + ", type:" + type); 
+            chartData = getData(locTimeRaw, time, place, type);
+            drawChart(chartData, time, place, type);
+        })
+
+    var optionsPlace = selectPlace
+        .selectAll("option")
+        .data(yKeyList).enter()
+        .append("option")
+        .text(function (d) { return d; })
+        .property("selected", function(d){ return d === placeDefault; });
+
     var selectTime = d3.select("#chartButtons") 
         .append("select")
         .attr("class", "dropdown") 
@@ -95,23 +113,6 @@ async function init() {
         .text(function (d) { return d; })   // text in dropdown menu
         .attr("value", function (d) { return d; })   // value returned by button
         .property("selected", function(d){ return d === timeDefault; });   // default selection
-
-    var selectPlace = d3.select("#chartButtons") 
-        .append("select")
-        .attr("class", "dropdown")
-        .on("change", function(d) {
-            place = this.value;
-            console.log("time:" + time + ", place:" + place + ", type:" + type); 
-            chartData = getData(locTimeRaw, time, place, type);
-            drawChart(chartData, time, place, type);
-        })
-
-    var optionsPlace = selectPlace
-        .selectAll("option")
-        .data(yKeyList).enter()
-        .append("option")
-        .text(function (d) { return d; })
-        .property("selected", function(d){ return d === placeDefault; });
 
     var selectCrime = d3.select("#chartButtons") 
         .append("select")
@@ -166,10 +167,18 @@ function drawChart(chartData, time, place, type) {
     var margin = {left: 40, right: 20, top: 20, bottom: 20, label: 120};
     var canvas = {width: screen.width - margin.left - margin.right, 
         height: screen.height - margin.top - margin.bottom};
-    var chartArea = {width: canvas.width * 0.5, height: canvas.height * 0.7};
+    var chartArea = {width: canvas.width * 0.5, height: canvas.height * 0.6};
     var origin = {x1: margin.left + margin.label, y1: margin.top, 
-        x2: screen.width * 0.5, y2: margin.top}
+        x2: chartArea.width - margin.label, y2: margin.top}
     
+    console.log("Screen: " + screen.width + ", " + screen.height); 
+    console.log("Canvas: " + canvas.width + ", " + canvas.height); 
+    console.log("Margin: " + margin.left + ", " + margin.top);
+    console.log("Chart size: " + chartArea.width + ", " + chartArea.height);
+    console.log("Chart 1 origin: " + origin.x1 + ", " + origin.y1);
+    console.log("Chart 2 origin: " + origin.x2 + ", " + origin.y2);
+    console.log("Axis lengths: " + xLen + ", " + yLen);
+
     // create SVG container for the heat map
     const svg = d3.select("#chartsdiv")
         .append("svg")
@@ -193,11 +202,11 @@ function drawChart(chartData, time, place, type) {
     // set heat map quantiles for coloring
     var colorBreak1 = minCrimes + (maxCrimes - minCrimes) * 0.02
     var colorBreak2 = minCrimes + (maxCrimes - minCrimes) * 0.10
-    var colorBreak3 = minCrimes + (maxCrimes - minCrimes) * 0.20
+    var colorBreak3 = minCrimes + (maxCrimes - minCrimes) * 0.25
     
     // set heat map color scale: green for low crime rate, red for high crime rate
     var mapColors = d3.scaleSequentialQuantile()
-        .interpolator(d3.interpolateHsl("green", "red"))
+        .interpolator(d3.interpolateHsl("limegreen", "red"))
         .domain([maxCrimes, colorBreak3, colorBreak2, colorBreak1, minCrimes])
 
     // set scales for the heat map
@@ -225,6 +234,7 @@ function drawChart(chartData, time, place, type) {
     
     // adjust Y-axis font size to handle 77 communities 
     var fontSizeY = (yLen > 50 ? 9 : 14);
+    console.log(fontSizeY);
 
     var axisY = svg.append("g")
         .style("font-size", (yLen > 50 ? 9 : 14))
@@ -292,6 +302,7 @@ function drawChart(chartData, time, place, type) {
         .attr("xlink:href", "https://raw.githubusercontent.com/dburrus3/dburrus3.github.io/main/data/Chicago_map_large.png")
         .attr("x", origin.x2)
         .attr("y", origin.y2)
+        .attr("align", "left")
         .attr("width", canvas.width - origin.x2)
         .attr("height", chartArea.height);
     

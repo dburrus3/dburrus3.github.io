@@ -227,7 +227,7 @@ function drawChart(chartData, time, place, type) {
     var fontSizeY = (yLen > 50 ? 9 : 14);
 
     var axisY = svg.append("g")
-        .style("font-size", fontSizeY)
+        .style("font-size", (yLen > 50 ? 9 : 14))
         .call(d3.axisLeft(scaleY).tickSize(0))
         .select(".domain").remove()  // hides the axis line
 

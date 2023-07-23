@@ -80,7 +80,6 @@ async function init() {
     trends = [labels, months, crimeFina, crimeViol, crimeProp, crimeStat, crimeTotl];
     // draw initial chart for Total Crimes
     drawChart(crimeType); 
-    console.log("crimeType in async(): " + crimeType);
 }
 
 function clearChart() {
@@ -105,12 +104,6 @@ function drawChart(crimeType) {
     // color for line and title, changes based on user-selected series
     lineColor = ["Gray", "CadetBlue", "ForestGreen", "FireBrick", "DarkOrange", "HotPink", "DodgerBlue"];
 
-    console.log("crimeType in drawChart(): " + crimeType);
-    console.log("x range: " + xMin + "," + xMax)
-    console.log("y range: " + yMin + "," + yMax)
-    console.log("yValues: " + yValues)
-    console.log("numPts: " + numPts);
-    
     // set chart widths, heights, origin locations, etc.
     const screenWd = window.innerWidth;
     const screenHt = window.innerHeight; 
@@ -141,7 +134,7 @@ function drawChart(crimeType) {
     // draw axes for the line chart
     var axisX = svg.append("g")
         .attr("transform","translate(" + chartOriginX + "," + (chartOriginY + chartHt) + ")")
-        .style("font-size", 14)
+        .style("font-size", "14px")
         .call(d3.axisBottom(scaleX)
             .tickFormat(d3.timeFormat("%Y-%m"))
             .ticks(numPts))
@@ -153,7 +146,7 @@ function drawChart(crimeType) {
 
     var axisY = svg.append("g")
         .attr("transform","translate(" + chartOriginX + "," + chartOriginY + ")")
-        .style("font-size", 14)
+        .style("font-size", "14px")
         .call(d3.axisLeft(scaleY));
         
     // create SVG path based on user-selected data series
@@ -217,11 +210,6 @@ function drawChart(crimeType) {
     var annotX2 = chartOriginX + scaleX(xValues[covidEnd]);
     var annotY2 = chartOriginY + scaleY(yValues[covidEnd]);
 
-    console.log("chartOrigin: " + chartOriginX + ", " + chartOriginY)
-    console.log("covid:" + covidStart + ", " + covidEnd)
-    console.log("annot1: " + annotX1 + ", " + annotY1)
-    console.log("annot2: " + annotX2 + ", " + annotY2)
-    
     var annotations = [
         {
             note: {
@@ -270,6 +258,8 @@ function drawChart(crimeType) {
             }]
         var makeAnnotations = d3.annotation().annotations(annotations)
         d3.select("#charts").append("g").call(makeAnnotations)
+            .style("font-size", "18px")
+            .style("font-weight", "700")
         // observation unique to this crime type
         var annotIdx = trends[0,0].indexOf("2020-12");
         var annotX = chartOriginX + scaleX(xValues[annotIdx]);
@@ -298,11 +288,13 @@ function drawChart(crimeType) {
                 },
                 color: lineColor[yChoose],
                 x: chartOriginX + marginWd, 
-                y: chartOriginX + chartHt * 0.5,
+                y: chartOriginX + chartHt * 0.6,
                 dx: 0, dy: 0
             }]
         var makeAnnotations = d3.annotation().annotations(annotations)
         d3.select("#charts").append("g").call(makeAnnotations)
+            .style("font-size", "18px")
+            .style("font-weight", "700")
         // observation unique to this crime type
         var annotIdx = trends[0,0].indexOf("2022-05");
         var annotX = chartOriginX + scaleX(xValues[annotIdx]);
@@ -331,11 +323,13 @@ function drawChart(crimeType) {
                 },
                 color: lineColor[yChoose],
                 x: chartOriginX + marginWd, 
-                y: chartOriginX + chartHt * 0.5,
+                y: chartOriginX + chartHt * 0.6,
                 dx: 0, dy: 0
             }]
         var makeAnnotations = d3.annotation().annotations(annotations)
         d3.select("#charts").append("g").call(makeAnnotations)
+            .style("font-size", "18px")
+            .style("font-weight", "700")
         // observation unique to this crime type
         var annotIdx = trends[0,0].indexOf("2022-10");
         var annotX = chartOriginX + scaleX(xValues[annotIdx]);
@@ -369,6 +363,8 @@ function drawChart(crimeType) {
             }]
         var makeAnnotations = d3.annotation().annotations(annotations)
         d3.select("#charts").append("g").call(makeAnnotations)
+            .style("font-size", "18px")
+            .style("font-weight", "700")
         // observation unique to this crime type
         var annotIdx = trends[0,0].indexOf("2022-05");
         var annotX = chartOriginX + scaleX(xValues[annotIdx]);

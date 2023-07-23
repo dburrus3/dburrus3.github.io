@@ -20,7 +20,7 @@
         width: 15%; padding: 2px 0px;
         color: Black; background-color:LightGray;}
     .prevnext:hover { background-color: DimGray; color: white; }
-    .dropdown { font: 14px Arial; font-weight: 600; padding: 2px; width: 12%;
+    .dropdown { font: 14px Arial; font-weight: 600; padding: 3px; width: 12%; border-radius: 8px; 
         background-color: LightSkyBlue; margin-right: 10px; }
     rect { stroke: white; }
 </style>
@@ -29,20 +29,25 @@
 
 <h1>Where and When</h1>
 <h2>Risk of becoming a victim varies by time and location</h2>
-<p>As shown on the <strong>Trends</strong> page, incidence of crime in Chicago varies widely by time of year. 
-    Reported crimes are roughly 15-20% lower during the winter months than during the summer.</p>
+<p>As shown on the previous page, <i>Trends</i>, incidence of crime in Chicago varies widely by time of year. 
+    Reported crimes are roughly <strong>15-20%</strong> lower during the winter months than during the summer.</p>
 <p>Patterns of criminal activity also vary by neighborhood, hour of the day, and day of the week. </p>
-<p>In the heat map below, each tile indicates relative frequency of crime for a particular 
-    combination of time interval (on the x-axis) and location (on the y-axis) during calendar 2022. 
-    Red denotes highest incidence of criminal activity; green denotes the lowest.
-    <strong style="color: DarkBlue">Click on the center blue drop-down</strong> below to explore different time intervals.</p>
+<p>In the heat map below, each tile indicates the relative frequency of crime for a particular 
+    combination of time interval (on the horizontal axis) and location (on the vertical axis) during calendar 2022. 
+    <strong style="background-color: #ff4444">Red</strong> denotes highest incidence of criminal activity, 
+    <strong style="background-color: #9adb50">green</strong> denotes the lowest, and shades of 
+    <strong style="background-color: #F2F062">yellow</strong> are close to the median.</p>
 <p>Chicago is divided into 9 regions, such as "Far North Side" and "West Side", as shown on the map below. 
-    These nine regions are subdivided into 77 named communities. To explore the impact of 
-    location on criminal activity, <strong style="color: DarkBlue">click on the left blue drop-down</strong>.</p>
+    The nine regions are subdivided into 77 named communities shown on the rightmost, larger map. 
+    <strong style="color: DarkBlue">Click on the left blue drop-down</strong> to explore the impact of 
+    location on criminal activity. <strong style="color: DarkBlue">Click on the center blue drop-down</strong> 
+    below to explore different time intervals.</p>
 <p>To explore how different types of crime vary by time and location, <strong style="color: DarkBlue">click 
     on the right blue drop-down</strong>. 
     As a starting point, you may wish to try: (a) Region/Day/Total; (b) Region/Hour/Financial vs. 
     Region/Hour/Violent; and (c) Location/Day/Statutory vs. Location/Day/Property.</p>
+<p><strong style="color: DarkBlue">Hover over a tile</strong> to see the number of crimes reported 
+    for your selected time, location, and type of crime.</p>
 </br>
 <div id="pageButtons">
     <a href="trends.html"><button class="prevnext">< Trends</button></a>
@@ -84,7 +89,6 @@ async function init() {
         .attr("class", "dropdown")
         .on("change", function(d) {
             place = this.value;
-            console.log("time:" + time + ", place:" + place + ", type:" + type); 
             chartData = getData(locTimeRaw, time, place, type);
             drawChart(chartData, time, place, type);
         })
@@ -101,7 +105,6 @@ async function init() {
         .attr("class", "dropdown") 
         .on("change", function(d) {
             time = this.value;
-            console.log("time:" + time + ", place:" + place + ", type:" + type); 
             chartData = getData(locTimeRaw, time, place, type);
             drawChart(chartData, time, place, type);
         })
@@ -119,7 +122,6 @@ async function init() {
         .attr("class", "dropdown")
         .on("change", function(d) {
             type = this.value;
-            console.log("time:" + time + ", place:" + place + ", type:" + type); 
             chartData = getData(locTimeRaw, time, place, type);
             drawChart(chartData, time, place, type);
         })
@@ -162,6 +164,7 @@ function clearChart() {
 function drawChart(chartData, time, place, type) {
     clearChart();
     console.log("drawChart - time:" + time + ", place:" + place + ", type:" + type);
+    
     // set chart widths, heights, origin locations, etc.
     var screen = {width: window.innerWidth, height: window.innerHeight}; 
     var margin = {left: 40, right: 20, top: 20, bottom: 20, label: 120};
@@ -169,16 +172,8 @@ function drawChart(chartData, time, place, type) {
         height: screen.height - margin.top - margin.bottom};
     var chartArea = {width: canvas.width * 0.5, height: canvas.height * 0.6};
     var origin = {x1: margin.left + margin.label, y1: margin.top, 
-        x2: chartArea.width - margin.label, y2: margin.top}
+        x2: canvas.width - chartArea.width - margin.label, y2: margin.top}
     
-    console.log("Screen: " + screen.width + ", " + screen.height); 
-    console.log("Canvas: " + canvas.width + ", " + canvas.height); 
-    console.log("Margin: " + margin.left + ", " + margin.top);
-    console.log("Chart size: " + chartArea.width + ", " + chartArea.height);
-    console.log("Chart 1 origin: " + origin.x1 + ", " + origin.y1);
-    console.log("Chart 2 origin: " + origin.x2 + ", " + origin.y2);
-    console.log("Axis lengths: " + xLen + ", " + yLen);
-
     // create SVG container for the heat map
     const svg = d3.select("#chartsdiv")
         .append("svg")
@@ -222,7 +217,7 @@ function drawChart(chartData, time, place, type) {
         
     // draw X and Y axes for the heat map
     var axisX = svg.append("g")
-        .style("font-size", 14)
+        .style("font-size", "14px")
         .attr("transform", "translate(0," + chartArea.height + ")")
         .call(d3.axisBottom(scaleX).tickSize(0))
         //.select(".domain").remove()   // conflicts with angled text on next lines
@@ -234,10 +229,9 @@ function drawChart(chartData, time, place, type) {
     
     // adjust Y-axis font size to handle 77 communities 
     var fontSizeY = (yLen > 50 ? 9 : 14);
-    console.log(fontSizeY);
-
+    
     var axisY = svg.append("g")
-        .style("font-size", (yLen > 50 ? 9 : 14))
+        .style("font-size", fontSizeY + "px")
         .call(d3.axisLeft(scaleY).tickSize(0))
         .select(".domain").remove()  // hides the axis line
 
@@ -246,7 +240,7 @@ function drawChart(chartData, time, place, type) {
         .append("div")
         .style("position", "absolute")
         .style("background-color", "lightyellow")
-        .style("font-size", "12px")
+        .style("font-size", "14px")
         .style("border", "solid")
         .style("border-width", "1px")
         .style("border-radius", "5px")
@@ -261,7 +255,8 @@ function drawChart(chartData, time, place, type) {
             .style("left", d3.event.pageX + "px")
             .style("top", d3.event.pageY + "px")
     };
-    
+    // d3.mouse(this)[0]
+    // d3.mouse(this)[1]
     var mouseMove = function(d) {
         tooltip
             .html(fmtCommas(d.numCrimes) + " reported crimes" + "<br>" +
@@ -312,4 +307,4 @@ function drawChart(chartData, time, place, type) {
 </body>
 </html>
 
-<!-- end file -->
+<!-- end of file -->

@@ -89,7 +89,7 @@ function clearChart() {
 function drawChart(crimeType) {
     // select data series to display
     var xChoose = 1;          // x-axis is always the months, and does not change 
-    var yChoose = crimeType;  // data series 2..6 should come from button click
+    var yChoose = crimeType;  // crimeType corresponds to data series 2..6, comes from button click
     var xValues = trends[0,xChoose];
     var yValues = trends[0,yChoose];
     var numPts = xValues.length;
@@ -116,9 +116,14 @@ function drawChart(crimeType) {
     var chartOriginY = marginHt;
 
     // set scales for the chart
-    var scaleX = d3.scaleTime()   //  scaleLinear also works
+    var scaleX = d3.scaleTime()
         .domain([xMin, xMax])
-        .range([0, chartWd]);
+        .range([0, chartWd]);   
+        // .nice() adds 2016-01 but shifts lines right and adds 2023-01
+
+    console.log("xMinMax: " + new Date(xMin).toLocaleString() + ", " + new Date(xMax).toLocaleString());
+    console.log("xScale: " + scaleX)
+    console.log("yMinMax: " + Math.round(yMin*10)/10 + ", " + Math.round(yMax*10)/10)
 
     var scaleY = d3.scaleLinear()
         .domain([yMin, yMax])
@@ -159,7 +164,7 @@ function drawChart(crimeType) {
     // draw path created by line()
     var path = svg.append("path")
         .attr("transform","translate(" + chartOriginX + "," + chartOriginY + ")")    
-        .attr("d", line(xValues,yValues))
+        .attr("d", line(xValues, yValues))
         .attr("stroke", lineColor[yChoose] )
         .attr("stroke-width", 4)
         .attr("fill", "none");
@@ -242,7 +247,7 @@ function drawChart(crimeType) {
     var makeAnnotations = d3.annotation().annotations(annotations)
     d3.select("#charts").append("g").call(makeAnnotations)
 
-    // annontations that vary by crime type
+    // annotations that vary by crime type
     if (yChoose == 2) {
         // explanation of crime type
         var annotations = [{

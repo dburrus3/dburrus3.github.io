@@ -11,4 +11,4 @@ Data were compiled from:
 - https://en.wikipedia.org/wiki/List_of_United_States_cities_by_crime_rate. This article includes 2019 population and crime data for the 100 largest U.S. cities.
 - https://en.wikipedia.org/wiki/List_of_United_States_cities_by_population. This article includes 2020 census data for the 333 largest U.S. cities.
 
-View this visualization at https://dburrus3.github.io/
+View this visualization at https://dburrus3.github.io/. It has been tested with these browsers: Firefox, Chrome, Brave, and Safari.

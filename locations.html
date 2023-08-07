@@ -194,14 +194,15 @@ function drawChart(chartData, time, place, type) {
     var maxCrimes = Math.max(...numCrimes);
     
     // set heat map quantiles for coloring
-    var colorBreak1 = minCrimes + (maxCrimes - minCrimes) * 0.02
+    var colorBreak1 = minCrimes + (maxCrimes - minCrimes) * 0.05
     var colorBreak2 = minCrimes + (maxCrimes - minCrimes) * 0.10
     var colorBreak3 = minCrimes + (maxCrimes - minCrimes) * 0.25
+    var colorBreak4 = minCrimes + (maxCrimes - minCrimes) * 0.50
     
     // set heat map color scale: green for low crime rate, red for high crime rate
     var mapColors = d3.scaleSequentialQuantile()
         .interpolator(d3.interpolateHsl("limegreen", "red"))
-        .domain([maxCrimes, colorBreak3, colorBreak2, colorBreak1, minCrimes])
+        .domain([colorBreak4, colorBreak3, colorBreak2, colorBreak1, minCrimes])
 
     // set scales for the heat map
     var scaleX = d3.scaleBand()
